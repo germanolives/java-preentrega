@@ -54,9 +54,13 @@ public class App {
         System.out.println("======  SISTEMA INVENTARIO - TECHLAB  ======");
         System.out.println("============================================");
         for (int i = 1; i < MENU_OPTIONS.length; i++) {
-            System.out.println("==> " + i + ". " + formatString(MENU_OPTIONS[i]));
+            if (i < 10) {
+                System.out.println("==>  " + i + ". " + formatString(MENU_OPTIONS[i]));
+            } else {
+                System.out.println("==> " + i + ". " + formatString(MENU_OPTIONS[i]));
+            }
         }
-        System.out.println("==> " + 0 + ". " + formatString(MENU_OPTIONS[0]));
+        System.out.println("==>  " + 0 + ". " + formatString(MENU_OPTIONS[0]));
         System.out.println();
         System.out.print("Elija una  opción: ");
     }
