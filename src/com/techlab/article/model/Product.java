@@ -70,6 +70,10 @@ public class Product {
         return this.category;
     }
 
+    public String getProductType () {
+        return "";
+    }
+
     public String getSpecificDetail () {
         return "";
     }
@@ -81,6 +85,7 @@ public class Product {
                 " | Precio: $ " + this.price +
                 " | Stock: " + this.stock +
                 " | Detalle: " + this.getSpecificDetail() +
+                " | Tipo: " + this.getProductType() +
                 (this.category != null ? " | Categoría: " + this.category.getName() : "");
     }
 

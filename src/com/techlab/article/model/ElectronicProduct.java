@@ -19,6 +19,15 @@ public class ElectronicProduct extends Product {
         return this.monthsOfWarranty;
     }
 
+    public String helpDeskPhoneNumber () {
+        return "+54 11 1234-5678";
+    }
+
+    @Override
+    public String getProductType () {
+        return "Producto electrónico";
+    }
+
     @Override
     public String getSpecificDetail () {
         return "Garantía: " + this.monthsOfWarranty + " meses";

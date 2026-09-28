@@ -1,5 +1,6 @@
 package com.techlab.article;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import com.techlab.article.model.Product;
@@ -349,7 +350,7 @@ public class App {
         while (true) {
             System.out.print("Ingrese el nuevo nombre de la categoría: ");
             name = enterString(scanner);
-            if (!catalog.isCategoryNameIntoCatalog(name)) {
+            if (!catalog.isCategoryNameIntoCatalog(name) || catalog.getIndexByCode(code) == catalog.getIndexByName(name)) {
                 break;
             }
             System.out.println("Ese nombre ya existe en el catálogo...");
