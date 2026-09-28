@@ -1,4 +1,6 @@
-package com.techlab.article;
+package com.techlab.article.service;
+
+import com.techlab.article.model.Product;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -20,16 +22,25 @@ public class Inventory {
         if (product == null) {
             throw new IllegalArgumentException("El producto debe existir");
         }
-        if (this.isCodeIntoInventory(product.getCode())) {
+        if (this.isProductIntoInventory(product.getCode())) {
             throw new IllegalArgumentException("El producto ya existe");
         }
         this.products.add(product);
     }
 
-    public void removeProductFromInventory (String code) {
+    public Product removeProductFromInventory (String code) {
         if (code != null && !code.isBlank() && !this.products.isEmpty()) {
-            this.products.removeIf(item -> item.getCode().equalsIgnoreCase(code.trim()));
+            Product product = this.products.stream()
+                    .filter(item -> item != null && item.getCode() != null)
+                    .filter(item -> item.getCode().equalsIgnoreCase(code.trim()))
+                    .findFirst()
+                    .orElse(null);
+            if (product != null) {
+                this.products.remove(product);
+                return product;
+            }
         }
+        return null;
     }
 
     public Product getProductByCode (String code) {
@@ -40,7 +51,7 @@ public class Inventory {
                 .orElse(null);
     }
 
-    public boolean isCodeIntoInventory (String code) {
+    public boolean isProductIntoInventory (String code) {
         return this.getProductByCode(code) != null;
     }
 

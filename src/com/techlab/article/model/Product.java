@@ -1,16 +1,18 @@
-package com.techlab.article;
+package com.techlab.article.model;
 
 public class Product {
     private String code;
     private String name;
     private double price;
     private int stock;
+    private Category category;
 
-    public Product (String code, String name, double price, int stock) {
+    public Product (String code, String name, double price, int stock, Category category) {
         setCode (code);
         setName (name);
         setPrice (price);
         setStock (stock);
+        setCategory (category);
     }
 
     public final void setCode (String code) {
@@ -41,6 +43,13 @@ public class Product {
         this.stock = stock;
     }
 
+    public final void setCategory (Category category) {
+        if (category == null) {
+            throw new IllegalArgumentException("El producto debe tener una categoría");
+        }
+        this.category = category;
+    }
+
     public String getCode () {
         return this.code;
     }
@@ -55,6 +64,19 @@ public class Product {
 
     public int getStock () {
         return this.stock;
+    }
+
+    public Category getCategory () {
+        return this.category;
+    }
+
+    @Override
+    public String toString () {
+        return "Código: " + this.code +
+                " | Nombre: " + this.name +
+                " | Precio: $ " + this.price +
+                " | Stock: " + this.stock +
+                (this.category != null ? " | Categoría: " + this.category.getName() : "");
     }
 
 
