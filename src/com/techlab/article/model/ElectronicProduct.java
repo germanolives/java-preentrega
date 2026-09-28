@@ -10,7 +10,7 @@ public class ElectronicProduct extends Product {
 
     public final void setWarranty (int monthsOfWarranty) {
         if (monthsOfWarranty < 0) {
-            throw new IllegalArgumentException("La garantía debe ser superior a un mes");
+            throw new IllegalArgumentException("La garantía no puede tener un valor menor a cero");
         }
         this.monthsOfWarranty = monthsOfWarranty;
     }
