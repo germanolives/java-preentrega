@@ -70,12 +70,17 @@ public class Product {
         return this.category;
     }
 
+    public String getSpecificDetail () {
+        return "";
+    }
+
     @Override
     public String toString () {
         return "Código: " + this.code +
                 " | Nombre: " + this.name +
                 " | Precio: $ " + this.price +
                 " | Stock: " + this.stock +
+                " | Detalle: " + this.getSpecificDetail() +
                 (this.category != null ? " | Categoría: " + this.category.getName() : "");
     }
 

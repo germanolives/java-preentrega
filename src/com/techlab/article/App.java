@@ -205,7 +205,8 @@ public class App {
             return false;
         }
         System.out.println("==> AGREGAR ITEM");
-
+        
+        Category category = selectCategory(catalog, scanner);
         String code;
         while (true) {
             System.out.print("Ingrese el código: ");
@@ -219,7 +220,6 @@ public class App {
         String name = enterString(scanner);
         double price = enterPrice(scanner);
         int stock = enterStock(scanner);
-        Category category = selectCategory(catalog, scanner);
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
         if (confirmOperation(scanner)) {
             Product item = new Product(code, name, price, stock, category);
