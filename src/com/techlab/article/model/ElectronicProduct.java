@@ -5,14 +5,18 @@ public class ElectronicProduct extends Product {
 
     public ElectronicProduct (String code, String name, double price, int stock, Category category, int monthsOfWarranty) {
         super(code, name, price, stock, category);
-        setWarranty (monthsOfWarranty);
+        this.monthsOfWarranty = validateMonthsOfWarranty (monthsOfWarranty);
     }
 
-    public final void setWarranty (int monthsOfWarranty) {
+    private int validateMonthsOfWarranty (int monthsOfWarranty) {
         if (monthsOfWarranty < 0) {
             throw new IllegalArgumentException("La garantía no puede tener un valor menor a cero");
         }
-        this.monthsOfWarranty = monthsOfWarranty;
+        return monthsOfWarranty;
+    }
+
+    public void setWarranty (int monthsOfWarranty) {
+        this.monthsOfWarranty = validateMonthsOfWarranty (monthsOfWarranty);
     }
 
     public int getMonthsOfWarranty () {

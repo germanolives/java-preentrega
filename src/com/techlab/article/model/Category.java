@@ -6,30 +6,28 @@ public class Category {
     private String description;
 
     public Category (String code, String name, String description) {
-        setCode (code);
-        setName (name);
-        setDescription (description);
+        this.code = validateString (code, "Código");
+        this.name = validateString (name, "Nombre");
+        this.description = validateString (description, "Descripción");
     }
 
-    public final void setCode (String code) {
+    private String validateString (String code, String message) {
         if (code == null || code.isBlank()) {
-            throw new IllegalArgumentException("El código no puede estar vacío");
+            throw new IllegalArgumentException("El valor de '" + message + "' del producto no puede estar vacío");
         }
-        this.code = code;
+        return code;
     }
 
-    public final void setName (String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("El nombre no puede estar vacío");
-        }
-        this.name = name;
+    public void setCode (String code) {
+        this.code = validateString (code, "Código");
     }
 
-    public final void setDescription (String description) {
-        if (description == null || description.isBlank()) {
-            throw new IllegalArgumentException("La descripción no puede estar vacía");
-        }
-        this.description = description;
+    public void setName (String name) {
+        this.name = validateString (name, "Nombre");
+    }
+
+    public void setDescription (String description) {
+        this.description = validateString (description, "Descripción");
     }
 
     public String getCode () {

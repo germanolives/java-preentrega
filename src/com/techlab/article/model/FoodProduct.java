@@ -7,17 +7,21 @@ public class FoodProduct extends Product{
 
     public FoodProduct (String code, String name, double price, int stock, Category category, LocalDate expirationDate) {
         super(code, name, price, stock, category);
-        setExpirationDate (expirationDate);
+        this.expirationDate = validateExpirationDate (expirationDate);
     }
 
-    public final void setExpirationDate (LocalDate expirationDate) {
+    private LocalDate validateExpirationDate (LocalDate expirationDate) {
         if (expirationDate == null) {
             throw new IllegalArgumentException("La fecha de vencimiento no puede ser nula");
         }
         if (expirationDate.isBefore(LocalDate.of(1999, 12, 31)) || expirationDate.isAfter(LocalDate.of(2100, 1, 1))) {
             throw new IllegalArgumentException("Fecha de vencimiento fuera de rango permitido");
         }
-        this.expirationDate = expirationDate;
+        return expirationDate;
+    }
+
+    public void setExpirationDate (LocalDate expirationDate) {
+        this.expirationDate = validateExpirationDate (expirationDate);
     }
 
     public LocalDate getExpirationDate () {

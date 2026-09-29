@@ -1,6 +1,6 @@
 package com.techlab.article;
 
-import java.time.LocalDate;
+// import java.time.LocalDate;
 import java.util.Scanner;
 
 import com.techlab.article.model.Product;

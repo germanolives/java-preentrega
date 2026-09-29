@@ -8,46 +8,59 @@ public class Product {
     private Category category;
 
     public Product (String code, String name, double price, int stock, Category category) {
-        setCode (code);
-        setName (name);
-        setPrice (price);
-        setStock (stock);
-        setCategory (category);
+        this.code = validateString(code, "Código");
+        this.name = validateString(name, "Nombre");
+        this.price = validatePrice(price);
+        this.stock = validateStock(stock);
+        this.category = validateCategory (category);
     }
 
-    public final void setCode (String code) {
+    private String validateString (String code, String message) {
         if (code == null || code.isBlank()) {
-            throw new IllegalArgumentException("El nombre del producto no puede estar vacío");
+            throw new IllegalArgumentException("El valor de '" + message + "' del producto no puede estar vacío");
         }
-        this.code = code;
+        return code;
     }
 
-    public final void setName (String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("El nombre del producto no puede estar vacío");
-        }
-        this.name = name;
-    }
-
-    public final void setPrice (double price) {
+    private double validatePrice (double price) {
         if (price <= 0) {
             throw new IllegalArgumentException("El precio debe tener un valor mayor a cero");
         }
-        this.price = price;
+        return price;
     }
 
-    public final void setStock (int stock) {
+    private int validateStock (int stock) {
         if (stock < 0) {
             throw new IllegalArgumentException("El stock no puede ser negativo");
         }
-        this.stock = stock;
+        return stock;
     }
 
-    public final void setCategory (Category category) {
+    private Category validateCategory (Category category) {
         if (category == null) {
             throw new IllegalArgumentException("El producto debe tener una categoría");
         }
-        this.category = category;
+        return category;
+    }
+
+    public void setCode (String code) {
+        this.code = validateString(code, "Código");
+    }
+
+    public void setName (String name) {
+            this.name = validateString(name, "Nombre");
+    }
+
+    public void setPrice (double price) {
+        this.price = validatePrice(price);
+    }
+
+    public void setStock (int stock) {
+        this.stock = validateStock (stock);
+    }
+
+    public void setCategory (Category category) {
+        this.category = validateCategory(category);
     }
 
     public String getCode () {
