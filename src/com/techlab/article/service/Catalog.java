@@ -7,63 +7,66 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.IntStream;
 
-
 public class Catalog {
     private final List<Category> categories;
 
-    public Catalog () {
+    public Catalog() {
         this.categories = new ArrayList<>();
     }
 
-    public boolean isEmpty () {
+    public boolean isEmpty() {
         return this.categories.isEmpty();
     }
 
-    public Category getCategoryByCode (String code) {
-        if (code == null || code.isBlank() || this.categories.isEmpty()) return null;
+    public Category getCategoryByCode(String code) {
+        if (code == null || code.isBlank() || this.categories.isEmpty())
+            return null;
         return this.categories.stream()
                 .filter(item -> item.getCode().equalsIgnoreCase(code.trim()))
                 .findFirst()
                 .orElse(null);
     }
 
-    public Category getCategoryByName (String name) {
-        if (name == null || name.isBlank() || this.categories.isEmpty()) return null;
+    public Category getCategoryByName(String name) {
+        if (name == null || name.isBlank() || this.categories.isEmpty())
+            return null;
         return this.categories.stream()
                 .filter(item -> item.getName().equalsIgnoreCase(name.trim()))
                 .findFirst()
                 .orElse(null);
     }
 
-    public boolean isCategoryCodeIntoCatalog (String code) {
-        return this.getCategoryByCode (code) != null;
+    public boolean isCategoryCodeIntoCatalog(String code) {
+        return this.getCategoryByCode(code) != null;
     }
 
-    public boolean isCategoryNameIntoCatalog (String name) {
-        return this.getCategoryByName (name) != null;
+    public boolean isCategoryNameIntoCatalog(String name) {
+        return this.getCategoryByName(name) != null;
     }
 
-    public List<Category> getCategories () {
+    public List<Category> getCategories() {
         return Collections.unmodifiableList(this.categories);
     }
 
-    public int getIndexByName (String name) {
-        if (name == null || name.isBlank()) return -1;
+    public int getIndexByName(String name) {
+        if (name == null || name.isBlank())
+            return -1;
         return IntStream.range(0, this.categories.size())
-                .filter(item -> this.categories.get(item).getName().equalsIgnoreCase(name.trim()) )
+                .filter(item -> this.categories.get(item).getName().equalsIgnoreCase(name.trim()))
                 .findFirst()
                 .orElse(-1);
     }
 
-    public int getIndexByCode (String code) {
-        if (code == null || code.isBlank()) return -1;
+    public int getIndexByCode(String code) {
+        if (code == null || code.isBlank())
+            return -1;
         return IntStream.range(0, this.categories.size())
                 .filter(item -> this.categories.get(item).getCode().equalsIgnoreCase(code.trim()))
                 .findFirst()
                 .orElse(-1);
     }
 
-    public void addCategoryToCatalog (Category category) {
+    public void addCategoryToCatalog(Category category) {
         if (category == null) {
             throw new IllegalArgumentException("La categoría debe existir");
         }
@@ -76,7 +79,7 @@ public class Catalog {
         this.categories.add(category);
     }
 
-    public boolean hasCategoryInInventory (String code, Inventory inventory) {
+    public boolean hasCategoryInInventory(String code, Inventory inventory) {
         if (code == null || code.isBlank() || inventory == null || inventory.getProducts() == null) {
             return false;
         }
@@ -85,7 +88,7 @@ public class Catalog {
                 .anyMatch(item -> item.getCategory().getCode().equalsIgnoreCase(code.trim()));
     }
 
-    public Category removeCategoryFromCatalog (String code, Inventory inventory) {
+    public Category removeCategoryFromCatalog(String code, Inventory inventory) {
         if (code != null && !code.isBlank() && !this.categories.isEmpty() && inventory.getProducts() != null) {
             if (!hasCategoryInInventory(code, inventory)) {
                 Category category = this.categories.stream()
@@ -102,4 +105,3 @@ public class Catalog {
         return null;
     }
 }
-

@@ -2,15 +2,15 @@ package com.techlab.article.model;
 
 import java.time.LocalDate;
 
-public class FoodProduct extends Product{
+public class FoodProduct extends Product {
     private LocalDate expirationDate;
 
-    public FoodProduct (String code, String name, double price, int stock, Category category, LocalDate expirationDate) {
+    public FoodProduct(String code, String name, double price, int stock, Category category, LocalDate expirationDate) {
         super(code, name, price, stock, category);
-        this.expirationDate = validateExpirationDate (expirationDate);
+        this.expirationDate = validateExpirationDate(expirationDate);
     }
 
-    private LocalDate validateExpirationDate (LocalDate expirationDate) {
+    private LocalDate validateExpirationDate(LocalDate expirationDate) {
         if (expirationDate == null) {
             throw new IllegalArgumentException("La fecha de vencimiento no puede ser nula");
         }
@@ -20,21 +20,21 @@ public class FoodProduct extends Product{
         return expirationDate;
     }
 
-    public void setExpirationDate (LocalDate expirationDate) {
-        this.expirationDate = validateExpirationDate (expirationDate);
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = validateExpirationDate(expirationDate);
     }
 
-    public LocalDate getExpirationDate () {
+    public LocalDate getExpirationDate() {
         return this.expirationDate;
     }
 
     @Override
-    public String getProductType () {
+    public String getProductType() {
         return "Producto alimenticio";
     }
 
     @Override
-    public String getSpecificDetail () {
+    public String getSpecificDetail() {
         return "Fecha de vencimiento: " + this.expirationDate;
     }
 
