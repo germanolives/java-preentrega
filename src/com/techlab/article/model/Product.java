@@ -1,6 +1,6 @@
 package com.techlab.article.model;
 
-public class Product {
+public abstract class Product {
     private String code;
     private String name;
     private double price;
@@ -83,13 +83,9 @@ public class Product {
         return this.category;
     }
 
-    public String getProductType() {
-        return "";
-    }
+    public abstract String getProductType();
 
-    public String getSpecificDetail() {
-        return "";
-    }
+    public abstract String getSpecificDetail();
 
     @Override
     public String toString() {

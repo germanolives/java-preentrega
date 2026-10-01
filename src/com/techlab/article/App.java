@@ -1,8 +1,12 @@
 package com.techlab.article;
 
-// import java.time.LocalDate;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+import com.techlab.article.model.ElectronicProduct;
+import com.techlab.article.model.FoodProduct;
 import com.techlab.article.model.Product;
 import com.techlab.article.service.Inventory;
 import com.techlab.article.model.Category;
@@ -13,6 +17,11 @@ public class App {
             "buscar item por código", "modificar item", "agregar item", "eliminar item", "listar categorías",
             "buscar categoría por nombre", "buscar categoría por código", "modificar categoría", "agregar categoría",
             "eliminar categoría" };
+
+    private final static String[] PRODUCT_TYPE = { "producto electrónico", "producto alimenticio" };
+
+    private final static LocalDate MIN_DATE = LocalDate.of(1999, 12, 31);
+    private final static LocalDate MAX_DATE = LocalDate.of(2100, 1, 1);
 
     public static int validateOption(String textUser, String[] options) {
         int output = -1;
@@ -85,7 +94,7 @@ public class App {
         while (true) {
             String textUser = scanner.nextLine().trim();
             if (textUser != null && !textUser.isBlank()) {
-                return textUser.trim();
+                return textUser;
             } else {
                 System.out.println("La entrada no puede estar vacía...");
             }
@@ -108,9 +117,9 @@ public class App {
         }
     }
 
-    public static int enterStock(Scanner scanner) {
+    public static int enterInteger(Scanner scanner, String message) {
         while (true) {
-            System.out.print("Ingrese el stock del producto: ");
+            System.out.print("Ingrese " + message + " del producto: ");
             String textUser = scanner.nextLine().trim();
             try {
                 int stock = Integer.parseInt(textUser);
@@ -120,6 +129,27 @@ public class App {
                 System.out.println("Error: El stock no puede ser negativo...");
             } catch (NumberFormatException e) {
                 System.out.println("Error: debe ingresar un número válido:" + e);
+            }
+        }
+    }
+
+    public static LocalDate enterDate(Scanner scanner) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        while (true) {
+            System.out.print("Ingrese la fecha (yyyy-MM-dd): ");
+            String input = enterString(scanner);
+
+            try {
+                LocalDate date = LocalDate.parse(input, formatter);
+                if (date.isBefore(MIN_DATE) || date.isAfter(MAX_DATE)) {
+                    System.out.println("Error: La fecha debe estar entre " + MIN_DATE + " y " + MAX_DATE + ".");
+                    continue;
+                }
+                return date;
+            } catch (DateTimeParseException e) {
+                System.out.println(
+                        "Error: Fecha o formato inválido. Asegúrese de ingresar una fecha real en formato yyyy-MM-dd (ej: 2026-09-30).");
             }
         }
     }
@@ -185,13 +215,25 @@ public class App {
         System.out.print("Ingrese el nuevo nombre del producto: ");
         String name = enterString(scanner);
         double price = enterPrice(scanner);
-        int stock = enterStock(scanner);
+        int stock = enterInteger(scanner, "stock");
+        int monthsOfWarranty = 0;
+        LocalDate expirationDate = null;
+        Product item = inventory.getProductByCode(code);
+        if (item instanceof ElectronicProduct) {
+            monthsOfWarranty = enterInteger(scanner, "meses de garantía");
+        } else if (item instanceof FoodProduct) {
+            expirationDate = enterDate(scanner);
+        }
         System.out.print("Confirma actualizar? ('SI' -- 'NO'): ");
         if (confirmOperation(scanner)) {
-            Product item = inventory.getProductByCode(code);
             item.setName(name);
             item.setPrice(price);
             item.setStock(stock);
+            if (item instanceof ElectronicProduct) {
+                ((ElectronicProduct) item).setWarranty(monthsOfWarranty);
+            } else if (item instanceof FoodProduct) {
+                ((FoodProduct) item).setExpirationDate(expirationDate);
+            }
             System.out.println("Producto actualizado...");
             System.out.println(item);
             return true;
@@ -211,7 +253,7 @@ public class App {
             return false;
         }
         System.out.println("==> AGREGAR ITEM");
-
+        int productType = selectProductType(scanner);
         Category category = selectCategory(catalog, scanner);
         String code;
         while (true) {
@@ -225,10 +267,18 @@ public class App {
         System.out.print("Ingrese el nombre: ");
         String name = enterString(scanner);
         double price = enterPrice(scanner);
-        int stock = enterStock(scanner);
+        int stock = enterInteger(scanner, "stock");
+        Product item;
+        if (productType == 1) {
+            int monthsOfWarranty = enterInteger(scanner, "meses de garantía");
+            item = new ElectronicProduct(code, name, price, stock, category, monthsOfWarranty);
+        } else {
+            LocalDate expirationDate = enterDate(scanner);
+            item = new FoodProduct(code, name, price, stock, category, expirationDate);
+        }
+
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
         if (confirmOperation(scanner)) {
-            Product item = new Product(code, name, price, stock, category);
             inventory.addProductToInventory(item);
             System.out.println("Producto agregado...");
             System.out.println(item);
@@ -268,6 +318,25 @@ public class App {
         } else {
             System.out.println("ℹ️ Operación cancelada por el usuario.");
             return false;
+        }
+    }
+
+    public static int selectProductType(Scanner scanner) {
+        System.out.println("Tipos de producto");
+        int index = 1;
+        for (String productType : PRODUCT_TYPE) {
+            System.out.println(index++ + ". | " + formatString(productType));
+        }
+        while (true) {
+            System.out.print("Seleccione (1 - " + PRODUCT_TYPE.length + "): ");
+            try {
+                int option = Integer.parseInt(enterString(scanner));
+                if (option > 0 && option <= PRODUCT_TYPE.length) {
+                    return option;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Opción incorrecta...");
+            }
         }
     }
 
