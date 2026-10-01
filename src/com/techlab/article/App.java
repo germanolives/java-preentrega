@@ -161,7 +161,7 @@ public class App {
         }
         System.out.println("==> LISTAR ITEMS");
         int index = 1;
-        for (Product item : inventory.getProducts()) {
+        for (Product item : inventory) {
             System.out.println(index++ + ". | " + item);
         }
         return true;
@@ -366,7 +366,7 @@ public class App {
         }
         System.out.println("==> LISTAR CATEGORÍAS");
         int index = 1;
-        for (Category item : catalog.getCategories()) {
+        for (Category item : catalog) {
             System.out.println(index++ + ". | " + item);
         }
         return true;

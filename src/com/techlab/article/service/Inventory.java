@@ -2,16 +2,21 @@ package com.techlab.article.service;
 
 import com.techlab.article.model.Product;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.IntStream;
 
-public class Inventory {
+public class Inventory implements Iterable<Product>{
     private final List<Product> products;
 
     public Inventory() {
         this.products = new ArrayList<>();
+    }
+
+    public Iterator<Product> iterator () {
+        return Collections.unmodifiableList(this.products).iterator();
     }
 
     public boolean isEmpty() {

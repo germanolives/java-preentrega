@@ -2,16 +2,21 @@ package com.techlab.article.service;
 
 import com.techlab.article.model.Category;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.IntStream;
 
-public class Catalog {
+public class Catalog implements Iterable<Category> {
     private final List<Category> categories;
 
     public Catalog() {
         this.categories = new ArrayList<>();
+    }
+
+    public Iterator<Category> iterator () {
+        return Collections.unmodifiableList(this.categories).iterator();
     }
 
     public boolean isEmpty() {
@@ -89,7 +94,7 @@ public class Catalog {
     }
 
     public Category removeCategoryFromCatalog(String code, Inventory inventory) {
-        if (code != null && !code.isBlank() && !this.categories.isEmpty() && inventory.getProducts() != null) {
+        if (code != null && !code.isBlank() && !this.categories.isEmpty() && inventory != null) {
             if (!hasCategoryInInventory(code, inventory)) {
                 Category category = this.categories.stream()
                         .filter(item -> item != null && item.getCode() != null)
