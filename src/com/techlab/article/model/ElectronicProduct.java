@@ -3,9 +3,9 @@ package com.techlab.article.model;
 public class ElectronicProduct extends Product {
     private int monthsOfWarranty;
 
-    public ElectronicProduct(String code, String name, double price, int stock, Category category,
+    public ElectronicProduct(String code, String name, double price, Category category,
             int monthsOfWarranty) {
-        super(code, name, price, stock, category);
+        super(code, name, price, category);
         this.monthsOfWarranty = validateMonthsOfWarranty(monthsOfWarranty);
     }
 

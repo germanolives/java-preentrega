@@ -4,14 +4,12 @@ public abstract class Product {
     private String code;
     private String name;
     private double price;
-    private int stock;
     private Category category;
 
-    public Product(String code, String name, double price, int stock, Category category) {
+    public Product(String code, String name, double price, Category category) {
         this.code = validateString(code, "Código");
         this.name = validateString(name, "Nombre");
         this.price = validatePrice(price);
-        this.stock = validateStock(stock);
         this.category = validateCategory(category);
     }
 
@@ -27,13 +25,6 @@ public abstract class Product {
             throw new IllegalArgumentException("El precio debe tener un valor mayor a cero");
         }
         return price;
-    }
-
-    private int validateStock(int stock) {
-        if (stock < 0) {
-            throw new IllegalArgumentException("El stock no puede ser negativo");
-        }
-        return stock;
     }
 
     private Category validateCategory(Category category) {
@@ -55,10 +46,6 @@ public abstract class Product {
         this.price = validatePrice(price);
     }
 
-    public void setStock(int stock) {
-        this.stock = validateStock(stock);
-    }
-
     public void setCategory(Category category) {
         this.category = validateCategory(category);
     }
@@ -75,10 +62,6 @@ public abstract class Product {
         return this.price;
     }
 
-    public int getStock() {
-        return this.stock;
-    }
-
     public Category getCategory() {
         return this.category;
     }
@@ -92,7 +75,6 @@ public abstract class Product {
         return "Código: " + this.code +
                 " | Nombre: " + this.name +
                 " | Precio: $ " + this.price +
-                " | Stock: " + this.stock +
                 " | Detalle: " + this.getSpecificDetail() +
                 " | Tipo: " + this.getProductType() +
                 (this.category != null ? " | Categoría: " + this.category.getName() : "");

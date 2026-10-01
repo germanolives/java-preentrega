@@ -215,7 +215,6 @@ public class App {
         System.out.print("Ingrese el nuevo nombre del producto: ");
         String name = enterString(scanner);
         double price = enterPrice(scanner);
-        int stock = enterInteger(scanner, "stock");
         int monthsOfWarranty = 0;
         LocalDate expirationDate = null;
         Product item = inventory.getProductByCode(code);
@@ -228,7 +227,6 @@ public class App {
         if (confirmOperation(scanner)) {
             item.setName(name);
             item.setPrice(price);
-            item.setStock(stock);
             if (item instanceof ElectronicProduct) {
                 ((ElectronicProduct) item).setWarranty(monthsOfWarranty);
             } else if (item instanceof FoodProduct) {
@@ -267,14 +265,13 @@ public class App {
         System.out.print("Ingrese el nombre: ");
         String name = enterString(scanner);
         double price = enterPrice(scanner);
-        int stock = enterInteger(scanner, "stock");
         Product item;
         if (productType == 1) {
             int monthsOfWarranty = enterInteger(scanner, "meses de garantía");
-            item = new ElectronicProduct(code, name, price, stock, category, monthsOfWarranty);
+            item = new ElectronicProduct(code, name, price, category, monthsOfWarranty);
         } else {
             LocalDate expirationDate = enterDate(scanner);
-            item = new FoodProduct(code, name, price, stock, category, expirationDate);
+            item = new FoodProduct(code, name, price, category, expirationDate);
         }
 
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
