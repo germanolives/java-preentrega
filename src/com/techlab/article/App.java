@@ -122,11 +122,11 @@ public class App {
             System.out.print("Ingrese " + message + " del producto: ");
             String textUser = scanner.nextLine().trim();
             try {
-                int stock = Integer.parseInt(textUser);
-                if (stock >= 0) {
-                    return stock;
+                int inputNumber = Integer.parseInt(textUser);
+                if (inputNumber >= 0) {
+                    return inputNumber;
                 }
-                System.out.println("Error: El stock no puede ser negativo...");
+                System.out.println("Error: El número no puede ser negativo...");
             } catch (NumberFormatException e) {
                 System.out.println("Error: debe ingresar un número válido:" + e);
             }
