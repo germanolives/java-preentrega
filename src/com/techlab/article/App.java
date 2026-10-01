@@ -13,12 +13,12 @@ import com.techlab.article.model.Category;
 import com.techlab.article.service.Catalog;
 
 public class App {
-    private final static String[] MENU_OPTIONS = { "salir", "listar items", "buscar item por nombre",
+    private final static String[] MENU_OPTIONS = {"salir", "listar items", "buscar item por nombre",
             "buscar item por código", "modificar item", "agregar item", "eliminar item", "listar categorías",
             "buscar categoría por nombre", "buscar categoría por código", "modificar categoría", "agregar categoría",
-            "eliminar categoría" };
+            "eliminar categoría"};
 
-    private final static String[] PRODUCT_TYPE = { "producto electrónico", "producto alimenticio" };
+    private final static String[] PRODUCT_TYPE = {"producto electrónico", "producto alimenticio"};
 
     private final static LocalDate MIN_DATE = LocalDate.of(1999, 12, 31);
     private final static LocalDate MAX_DATE = LocalDate.of(2100, 1, 1);
@@ -159,7 +159,7 @@ public class App {
             System.out.println("Inventario vacío...");
             return false;
         }
-        System.out.println("==> LISTAR ITEMS");
+        System.out.println("==> LISTA DE PRODUCTOS");
         int index = 1;
         for (Product item : inventory) {
             System.out.println(index++ + ". | " + item);
@@ -364,7 +364,7 @@ public class App {
             System.out.println("Catálogo vacío...");
             return false;
         }
-        System.out.println("==> LISTAR CATEGORÍAS");
+        System.out.println("==> LISTA DE CATEGORÍAS");
         int index = 1;
         for (Category item : catalog) {
             System.out.println(index++ + ". | " + item);

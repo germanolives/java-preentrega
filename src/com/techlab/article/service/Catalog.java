@@ -15,7 +15,7 @@ public class Catalog implements Iterable<Category> {
         this.categories = new ArrayList<>();
     }
 
-    public Iterator<Category> iterator () {
+    public Iterator<Category> iterator() {
         return Collections.unmodifiableList(this.categories).iterator();
     }
 
