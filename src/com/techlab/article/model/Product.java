@@ -13,11 +13,11 @@ public abstract class Product {
         this.category = validateCategory(category);
     }
 
-    private String validateString(String code, String message) {
-        if (code == null || code.isBlank()) {
+    private String validateString(String string, String message) {
+        if (string == null || string.isBlank()) {
             throw new IllegalArgumentException("El valor de '" + message + "' del producto no puede estar vacío");
         }
-        return code;
+        return string.trim();
     }
 
     private double validatePrice(double price) {

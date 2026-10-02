@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import java.util.List;
 
 import com.techlab.article.model.ElectronicProduct;
 import com.techlab.article.model.FoodProduct;
@@ -11,14 +12,13 @@ import com.techlab.article.model.Product;
 import com.techlab.article.service.Inventory;
 import com.techlab.article.model.Category;
 import com.techlab.article.service.Catalog;
+import com.techlab.article.model.ProductType;
 
 public class App {
     private final static String[] MENU_OPTIONS = {"salir", "listar items", "buscar item por nombre",
             "buscar item por código", "modificar item", "agregar item", "eliminar item", "listar categorías",
             "buscar categoría por nombre", "buscar categoría por código", "modificar categoría", "agregar categoría",
             "eliminar categoría"};
-
-    private final static String[] PRODUCT_TYPE = {"producto electrónico", "producto alimenticio"};
 
     private final static LocalDate MIN_DATE = LocalDate.of(1999, 12, 31);
     private final static LocalDate MAX_DATE = LocalDate.of(2100, 1, 1);
@@ -251,8 +251,8 @@ public class App {
             return false;
         }
         System.out.println("==> AGREGAR ITEM");
-        int productType = selectProductType(scanner);
-        Category category = selectCategory(catalog, scanner);
+        ProductType selectedProductType = selectProductType(scanner);
+        Category category = selectCategory(catalog, scanner, selectedProductType);
         String code;
         while (true) {
             System.out.print("Ingrese el código: ");
@@ -266,14 +266,19 @@ public class App {
         String name = enterString(scanner);
         double price = enterPrice(scanner);
         Product item;
-        if (productType == 1) {
-            int monthsOfWarranty = enterInteger(scanner, "meses de garantía");
-            item = new ElectronicProduct(code, name, price, category, monthsOfWarranty);
-        } else {
-            LocalDate expirationDate = enterDate(scanner);
-            item = new FoodProduct(code, name, price, category, expirationDate);
+        switch (selectedProductType) {
+            case ELECTRONIC -> {
+                int monthsOfWarranty = enterInteger(scanner, "meses de garantía");
+                item = new ElectronicProduct(code, name, price, category, monthsOfWarranty);
+            }
+            case FOOD -> {
+                LocalDate expirationDate = enterDate(scanner);
+                item = new FoodProduct(code, name, price, category, expirationDate);
+            }
+            default -> {
+                throw new IllegalArgumentException("Tipo no soportado: " + selectedProductType);
+            }
         }
-
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
         if (confirmOperation(scanner)) {
             inventory.addProductToInventory(item);
@@ -318,40 +323,49 @@ public class App {
         }
     }
 
-    public static int selectProductType(Scanner scanner) {
+    public static ProductType selectProductType(Scanner scanner) {
+        ProductType[] types = ProductType.values();
         System.out.println("Tipos de producto");
         int index = 1;
-        for (String productType : PRODUCT_TYPE) {
-            System.out.println(index++ + ". | " + formatString(productType));
+        for (ProductType productType : types) {
+            System.out.println(index++ + ". | " + formatString(productType.getDescription()));
         }
         while (true) {
-            System.out.print("Seleccione (1 - " + PRODUCT_TYPE.length + "): ");
+            System.out.print("Seleccione (1 - " + types.length + "): ");
             try {
                 int option = Integer.parseInt(enterString(scanner));
-                if (option > 0 && option <= PRODUCT_TYPE.length) {
-                    return option;
+                if (option > 0 && option <= types.length) {
+                    return types[option-1];
                 }
+                System.out.println("Opción fuera de rango...");
             } catch (NumberFormatException e) {
-                System.out.println("Opción incorrecta...");
+                System.out.println("Opción incorrecta, ingrese un número...");
             }
         }
     }
 
-    public static Category selectCategory(Catalog catalog, Scanner scanner) {
-        if (!listCategories(catalog)) {
-            System.out.println("Debe agregar una categoría en el catálogo... ");
+    public static Category selectCategory(Catalog catalog, Scanner scanner, ProductType productType) {
+        List<Category> filterCatalog = catalog.getCategories().stream()
+                .filter(item -> item.getProductType() == productType)
+                .toList();
+        if (filterCatalog.isEmpty()) {
+            System.out.println("No hay categoría para tipo de producto '" + productType.getDescription() + "'");
             return null;
-        } else {
-            while (true) {
-                System.out.print("Elija la categoría (1 - " + catalog.getCategories().size() + "): ");
-                try {
-                    int option = Integer.parseInt(enterString(scanner));
-                    if (option > 0 && option <= catalog.getCategories().size()) {
-                        return catalog.getCategories().get(option - 1);
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Opción incorrecta...");
+        }
+        System.out.println("==> LISTA DE CATEGORÍAS");
+        int index = 1;
+        for (Category item : filterCatalog) {
+            System.out.println(index++ + ". | " + item);
+        }
+        while (true) {
+            System.out.print("Elija la categoría (1 - " + filterCatalog.size() + "): ");
+            try {
+                int option = Integer.parseInt(enterString(scanner));
+                if (option > 0 && option <= filterCatalog.size()) {
+                    return filterCatalog.get(option - 1);
                 }
+            } catch (NumberFormatException e) {
+                System.out.println("Opción incorrecta...");
             }
         }
     }
@@ -448,7 +462,10 @@ public class App {
         System.out.println("==> AGREGAR CATEGORÍA");
         String code;
         String name;
+        ProductType selectedProductType;
         while (true) {
+            System.out.println("--> Seleccione el tipo de producto de la categoría:");
+            selectedProductType = selectProductType(scanner);
             System.out.print("Ingrese el código: ");
             code = enterString(scanner);
             if (!catalog.isCategoryCodeIntoCatalog(code)) {
@@ -468,7 +485,7 @@ public class App {
         String description = enterString(scanner);
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
         if (confirmOperation(scanner)) {
-            Category item = new Category(code, name, description);
+            Category item = new Category(code, name, description, selectedProductType);
             catalog.addCategoryToCatalog(item);
             System.out.println("Categoría agregada...");
             System.out.println(item);
