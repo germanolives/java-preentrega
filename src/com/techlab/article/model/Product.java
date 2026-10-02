@@ -66,7 +66,7 @@ public abstract class Product {
         return this.category;
     }
 
-    public abstract String getProductType();
+    public abstract ProductType getProductType();
 
     public abstract String getSpecificDetail();
 

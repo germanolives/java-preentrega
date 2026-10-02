@@ -7,6 +7,9 @@ public class FoodProduct extends Product {
 
     public FoodProduct(String code, String name, double price, Category category, LocalDate expirationDate) {
         super(code, name, price, category);
+        if (category.getProductType() != ProductType.FOOD) {
+            throw new IllegalArgumentException("La categoría debe ser tipo de producto '" + ProductType.FOOD.getDescription() + "'");
+        }
         this.expirationDate = validateExpirationDate(expirationDate);
     }
 
@@ -29,8 +32,8 @@ public class FoodProduct extends Product {
     }
 
     @Override
-    public String getProductType() {
-        return "Producto alimenticio";
+    public ProductType getProductType() {
+        return ProductType.FOOD;
     }
 
     @Override
