@@ -335,7 +335,7 @@ public class App {
             try {
                 int option = Integer.parseInt(enterString(scanner));
                 if (option > 0 && option <= types.length) {
-                    return types[option-1];
+                    return types[option - 1];
                 }
                 System.out.println("Opción fuera de rango...");
             } catch (NumberFormatException e) {

@@ -76,7 +76,7 @@ public abstract class Product {
                 " | Nombre: " + this.name +
                 " | Precio: $ " + this.price +
                 " | Detalle: " + this.getSpecificDetail() +
-                " | Tipo: " + this.getProductType() +
+                " | Tipo: " + this.getProductType().getDescription() +
                 (this.category != null ? " | Categoría: " + this.category.getName() : "");
     }
 
