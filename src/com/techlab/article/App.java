@@ -1,8 +1,6 @@
 package com.techlab.article;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.List;
 
@@ -13,6 +11,8 @@ import com.techlab.article.service.Inventory;
 import com.techlab.article.model.Category;
 import com.techlab.article.service.Catalog;
 import com.techlab.article.model.ProductType;
+import com.techlab.article.util.FormatUtil;
+import com.techlab.article.util.InputUtil;
 
 public class App {
     private final static String[] MENU_OPTIONS = {"salir", "listar items", "buscar item por nombre",
@@ -43,23 +43,6 @@ public class App {
         return output;
     }
 
-    public static String formatString(String chain) {
-        if (chain == null || chain.isBlank()) {
-            return "";
-        }
-        chain = chain.toLowerCase().trim();
-        String[] words = chain.split("\\s+");
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                String firstLetter = word.substring(0, 1).toUpperCase();
-                String rest = word.substring(1);
-                stringBuilder.append(firstLetter).append(rest).append(" ");
-            }
-        }
-        chain = stringBuilder.toString().trim();
-        return chain;
-    }
 
     public static void showMenuOptions() {
         System.out.println("============================================");
@@ -67,19 +50,19 @@ public class App {
         System.out.println("============================================");
         for (int i = 1; i < MENU_OPTIONS.length; i++) {
             if (i < 10) {
-                System.out.println("==>  " + i + ". " + formatString(MENU_OPTIONS[i]));
+                System.out.println("==>  " + i + ". " + FormatUtil.capitalizeString(MENU_OPTIONS[i]));
             } else {
-                System.out.println("==> " + i + ". " + formatString(MENU_OPTIONS[i]));
+                System.out.println("==> " + i + ". " + FormatUtil.capitalizeString(MENU_OPTIONS[i]));
             }
         }
-        System.out.println("==>  " + 0 + ". " + formatString(MENU_OPTIONS[0]));
+        System.out.println("==>  " + 0 + ". " + FormatUtil.capitalizeString(MENU_OPTIONS[0]));
         System.out.println();
         System.out.print("Elija una  opción: ");
     }
 
     public static boolean confirmOperation(Scanner scanner) {
         while (true) {
-            String option = enterString(scanner);
+            String option = InputUtil.enterString(scanner);
             if (option.equalsIgnoreCase("si")) {
                 return true;
             } else if (option.equalsIgnoreCase("no")) {
@@ -90,69 +73,6 @@ public class App {
         }
     }
 
-    public static String enterString(Scanner scanner) {
-        while (true) {
-            String textUser = scanner.nextLine().trim();
-            if (textUser != null && !textUser.isBlank()) {
-                return textUser;
-            } else {
-                System.out.println("La entrada no puede estar vacía...");
-            }
-        }
-    }
-
-    public static double enterPrice(Scanner scanner) {
-        while (true) {
-            System.out.print("Ingrese el precio del producto: ");
-            String textUser = scanner.nextLine().trim();
-            try {
-                double price = Double.parseDouble(textUser);
-                if (price > 0) {
-                    return price;
-                }
-                System.out.println("Error: El precio debe ser un número mayor a cero...");
-            } catch (NumberFormatException e) {
-                System.out.println("Error: debe ingresar un precio válido: " + e);
-            }
-        }
-    }
-
-    public static int enterInteger(Scanner scanner, String message) {
-        while (true) {
-            System.out.print("Ingrese " + message + " del producto: ");
-            String textUser = scanner.nextLine().trim();
-            try {
-                int inputNumber = Integer.parseInt(textUser);
-                if (inputNumber >= 0) {
-                    return inputNumber;
-                }
-                System.out.println("Error: El número no puede ser negativo...");
-            } catch (NumberFormatException e) {
-                System.out.println("Error: debe ingresar un número válido:" + e);
-            }
-        }
-    }
-
-    public static LocalDate enterDate(Scanner scanner) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        while (true) {
-            System.out.print("Ingrese la fecha (yyyy-MM-dd): ");
-            String input = enterString(scanner);
-
-            try {
-                LocalDate date = LocalDate.parse(input, formatter);
-                if (date.isBefore(MIN_DATE) || date.isAfter(MAX_DATE)) {
-                    System.out.println("Error: La fecha debe estar entre " + MIN_DATE + " y " + MAX_DATE + ".");
-                    continue;
-                }
-                return date;
-            } catch (DateTimeParseException e) {
-                System.out.println(
-                        "Error: Fecha o formato inválido. Asegúrese de ingresar una fecha real en formato yyyy-MM-dd (ej: 2026-09-30).");
-            }
-        }
-    }
 
     public static boolean listItems(Inventory inventory) {
         if (inventory == null || inventory.isEmpty()) {
@@ -174,7 +94,7 @@ public class App {
         }
         System.out.println("==> BUSCAR ITEM POR NOMBRE");
         System.out.print("Ingrese el nombre del producto: ");
-        String name = enterString(scanner);
+        String name = InputUtil.enterString(scanner);
         Product item = inventory.getProductByName(name);
         if (item == null) {
             System.out.println("Producto inexistente...");
@@ -192,7 +112,7 @@ public class App {
         }
         System.out.println("==> BUSCAR ITEM POR CÓDIGO");
         System.out.print("Ingrese el código del producto: ");
-        String code = enterString(scanner);
+        String code = InputUtil.enterString(scanner);
         Product item = inventory.getProductByCode(code);
         if (item == null) {
             System.out.println("Producto inexistente...");
@@ -213,15 +133,15 @@ public class App {
         if (code.isEmpty())
             return false;
         System.out.print("Ingrese el nuevo nombre del producto: ");
-        String name = enterString(scanner);
-        double price = enterPrice(scanner);
+        String name = InputUtil.enterString(scanner);
+        double price = InputUtil.enterPrice(scanner);
         int monthsOfWarranty = 0;
         LocalDate expirationDate = null;
         Product item = inventory.getProductByCode(code);
         if (item instanceof ElectronicProduct) {
-            monthsOfWarranty = enterInteger(scanner, "meses de garantía");
+            monthsOfWarranty = InputUtil.enterInteger(scanner, "meses de garantía");
         } else if (item instanceof FoodProduct) {
-            expirationDate = enterDate(scanner);
+            expirationDate = InputUtil.enterDate(scanner, MIN_DATE, MAX_DATE);
         }
         System.out.print("Confirma actualizar? ('SI' -- 'NO'): ");
         if (confirmOperation(scanner)) {
@@ -256,23 +176,23 @@ public class App {
         String code;
         while (true) {
             System.out.print("Ingrese el código: ");
-            code = enterString(scanner);
+            code = InputUtil.enterString(scanner);
             if (!inventory.isProductIntoInventory(code)) {
                 break;
             }
             System.out.println("Ese código ya existe...");
         }
         System.out.print("Ingrese el nombre: ");
-        String name = enterString(scanner);
-        double price = enterPrice(scanner);
+        String name = InputUtil.enterString(scanner);
+        double price = InputUtil.enterPrice(scanner);
         Product item;
         switch (selectedProductType) {
             case ELECTRONIC -> {
-                int monthsOfWarranty = enterInteger(scanner, "meses de garantía");
+                int monthsOfWarranty = InputUtil.enterInteger(scanner, "meses de garantía");
                 item = new ElectronicProduct(code, name, price, category, monthsOfWarranty);
             }
             case FOOD -> {
-                LocalDate expirationDate = enterDate(scanner);
+                LocalDate expirationDate = InputUtil.enterDate(scanner, MIN_DATE, MAX_DATE);
                 item = new FoodProduct(code, name, price, category, expirationDate);
             }
             default -> {
@@ -299,7 +219,7 @@ public class App {
         }
         System.out.println("==> ELIMINAR ITEM");
         System.out.println("Ingrese el código del producto: ");
-        String code = enterString(scanner);
+        String code = InputUtil.enterString(scanner);
         Product item = inventory.getProductByCode(code);
         if (item == null) {
             System.out.println("No existe ese producto en el inventario...");
@@ -328,12 +248,12 @@ public class App {
         System.out.println("Tipos de producto");
         int index = 1;
         for (ProductType productType : types) {
-            System.out.println(index++ + ". | " + formatString(productType.getDescription()));
+            System.out.println(index++ + ". | " + FormatUtil.capitalizeString(productType.getDescription()));
         }
         while (true) {
             System.out.print("Seleccione (1 - " + types.length + "): ");
             try {
-                int option = Integer.parseInt(enterString(scanner));
+                int option = Integer.parseInt(InputUtil.enterString(scanner));
                 if (option > 0 && option <= types.length) {
                     return types[option - 1];
                 }
@@ -360,7 +280,7 @@ public class App {
         while (true) {
             System.out.print("Elija la categoría (1 - " + filterCatalog.size() + "): ");
             try {
-                int option = Integer.parseInt(enterString(scanner));
+                int option = Integer.parseInt(InputUtil.enterString(scanner));
                 if (option > 0 && option <= filterCatalog.size()) {
                     return filterCatalog.get(option - 1);
                 }
@@ -390,7 +310,7 @@ public class App {
         }
         System.out.println("==> BUSCAR CATEGORÍA POR NOMBRE");
         System.out.print("Ingrese el nombre de la categoría: ");
-        String name = enterString(scanner);
+        String name = InputUtil.enterString(scanner);
         Category item = catalog.getCategoryByName(name);
         if (item == null) {
             System.out.println("Categoría inexistente...");
@@ -408,7 +328,7 @@ public class App {
         }
         System.out.println("==> BUSCAR CATEGORÍA POR CÓDIGO");
         System.out.print("Ingrese el código de la categoría: ");
-        String code = enterString(scanner);
+        String code = InputUtil.enterString(scanner);
         Category item = catalog.getCategoryByCode(code);
         if (item == null) {
             System.out.println("Categoría inexistente...");
@@ -431,7 +351,7 @@ public class App {
         String name;
         while (true) {
             System.out.print("Ingrese el nuevo nombre de la categoría: ");
-            name = enterString(scanner);
+            name = InputUtil.enterString(scanner);
             if (!catalog.isCategoryNameIntoCatalog(name)
                     || catalog.getIndexByCode(code) == catalog.getIndexByName(name)) {
                 break;
@@ -439,7 +359,7 @@ public class App {
             System.out.println("Ese nombre ya existe en el catálogo...");
         }
         System.out.print("Ingrese la nueva descripción de la categoría: ");
-        String description = enterString(scanner);
+        String description = InputUtil.enterString(scanner);
         System.out.print("Confirma actualizar? ('SI' -- 'NO'): ");
         if (confirmOperation(scanner)) {
             Category item = catalog.getCategoryByCode(code);
@@ -467,7 +387,7 @@ public class App {
             System.out.println("--> Seleccione el tipo de producto de la categoría:");
             selectedProductType = selectProductType(scanner);
             System.out.print("Ingrese el código: ");
-            code = enterString(scanner);
+            code = InputUtil.enterString(scanner);
             if (!catalog.isCategoryCodeIntoCatalog(code)) {
                 break;
             }
@@ -475,14 +395,14 @@ public class App {
         }
         while (true) {
             System.out.print("Ingrese el nombre: ");
-            name = enterString(scanner);
+            name = InputUtil.enterString(scanner);
             if (!catalog.isCategoryNameIntoCatalog(name)) {
                 break;
             }
             System.out.println("Ese nombre de categoría ya existe...");
         }
         System.out.print("Ingrese la descripción: ");
-        String description = enterString(scanner);
+        String description = InputUtil.enterString(scanner);
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
         if (confirmOperation(scanner)) {
             Category item = new Category(code, name, description, selectedProductType);
@@ -504,7 +424,7 @@ public class App {
         }
         System.out.println("==> ELIMINAR CATEGORÍA");
         System.out.println("Ingrese el código de la categoría: ");
-        String code = enterString(scanner);
+        String code = InputUtil.enterString(scanner);
         Category item = catalog.getCategoryByCode(code);
         if (item == null) {
             System.out.println("No existe esa categoría en el catálogo...");
@@ -540,7 +460,7 @@ public class App {
         int menuOption;
         do {
             showMenuOptions();
-            String textUser = enterString(scanner);
+            String textUser = InputUtil.enterString(scanner);
             menuOption = validateOption(textUser, MENU_OPTIONS);
             switch (menuOption) {
                 case 0 -> System.out.println("Saliendo del sistema...");
