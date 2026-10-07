@@ -9,7 +9,8 @@ public class ElectronicProduct extends Product {
             int monthsOfWarranty) {
         super(code, name, price, category);
         if (category.getProductType() != ProductType.ELECTRONIC) {
-            throw new IllegalArgumentException("La categoría debe ser tipo de producto '" + ProductType.ELECTRONIC.getDescription() + "'");
+            throw new IllegalArgumentException(
+                    "La categoría debe ser tipo de producto '" + ProductType.ELECTRONIC.getDescription() + "'");
         }
         this.monthsOfWarranty = ValidateUtil.monthsOfWarranty(monthsOfWarranty);
     }

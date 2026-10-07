@@ -6,7 +6,7 @@ import com.techlab.article.model.ProductType;
 import java.time.LocalDate;
 
 public final class ValidateUtil {
-    private ValidateUtil () {
+    private ValidateUtil() {
         throw new UnsupportedOperationException("Clase utilitaria, no se debe instanciar.");
     }
 
@@ -31,7 +31,7 @@ public final class ValidateUtil {
         return category;
     }
 
-    public static ProductType productType (ProductType productType) {
+    public static ProductType productType(ProductType productType) {
         if (productType == null) {
             throw new IllegalArgumentException("El tipo de producto debe existir");
         }

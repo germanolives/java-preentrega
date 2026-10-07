@@ -10,7 +10,7 @@ public enum ProductType {
         this.description = description;
     }
 
-    public String getDescription () {
+    public String getDescription() {
         return this.description;
     }
 }

@@ -7,7 +7,8 @@ import java.util.Scanner;
 
 public final class InputUtil {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private InputUtil () {
+
+    private InputUtil() {
         throw new UnsupportedOperationException("Clase utilitaria, no se debe instanciar.");
     }
 

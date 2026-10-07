@@ -27,7 +27,7 @@ public class Category {
         this.description = ValidateUtil.string(description, "Descripción");
     }
 
-    public void setProductType (ProductType productType) {
+    public void setProductType(ProductType productType) {
         this.productType = ValidateUtil.productType(productType);
     }
 
@@ -43,7 +43,7 @@ public class Category {
         return this.description;
     }
 
-    public ProductType getProductType () {
+    public ProductType getProductType() {
         return this.productType;
     }
 

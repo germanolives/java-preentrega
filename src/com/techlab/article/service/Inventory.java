@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.IntStream;
 
-public class Inventory implements Iterable<Product>{
+public class Inventory implements Iterable<Product> {
     private final List<Product> products;
 
     public Inventory() {
         this.products = new ArrayList<>();
     }
 
-    public Iterator<Product> iterator () {
+    public Iterator<Product> iterator() {
         return Collections.unmodifiableList(this.products).iterator();
     }
 

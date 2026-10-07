@@ -10,13 +10,14 @@ public class FoodProduct extends Product {
     public FoodProduct(String code, String name, double price, Category category, LocalDate expirationDate) {
         super(code, name, price, category);
         if (category.getProductType() != ProductType.FOOD) {
-            throw new IllegalArgumentException("La categoría debe ser tipo de producto '" + ProductType.FOOD.getDescription() + "'");
+            throw new IllegalArgumentException(
+                    "La categoría debe ser tipo de producto '" + ProductType.FOOD.getDescription() + "'");
         }
         this.expirationDate = ValidateUtil.expirationDate(expirationDate);
     }
 
     public void setExpirationDate(LocalDate expirationDate) {
-        this.expirationDate =ValidateUtil.expirationDate(expirationDate);
+        this.expirationDate = ValidateUtil.expirationDate(expirationDate);
     }
 
     public LocalDate getExpirationDate() {
