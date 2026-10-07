@@ -1,7 +1,10 @@
 package com.techlab.article.util;
 
 public final class FormatUtil {
-    private FormatUtil() {}
+    private FormatUtil() {
+        throw new UnsupportedOperationException("Clase utilitaria, no se debe instanciar.");
+    }
+
     public static String capitalizeString(String chain) {
         if (chain == null || chain.isBlank()) {
             return "";
