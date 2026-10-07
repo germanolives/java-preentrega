@@ -40,19 +40,6 @@ public class App {
         System.out.print("Elija una  opción: ");
     }
 
-    public static boolean confirmOperation(Scanner scanner) {
-        while (true) {
-            String option = InputUtil.enterString(scanner);
-            if (option.equalsIgnoreCase("si")) {
-                return true;
-            } else if (option.equalsIgnoreCase("no")) {
-                return false;
-            } else {
-                System.out.println("Ingrese la opción correcta...");
-            }
-        }
-    }
-
     public static void listItems(Inventory inventory) {
         if (inventory == null || inventory.isEmpty()) {
             System.out.println("Inventario vacío...");
@@ -122,7 +109,7 @@ public class App {
             expirationDate = InputUtil.enterDate(scanner, MIN_DATE, MAX_DATE);
         }
         System.out.print("Confirma actualizar? ('SI' -- 'NO'): ");
-        if (confirmOperation(scanner)) {
+        if (InputUtil.confirmOperation(scanner)) {
             item.setName(name);
             item.setPrice(price);
             if (item instanceof ElectronicProduct) {
@@ -178,7 +165,7 @@ public class App {
             }
         }
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
-        if (confirmOperation(scanner)) {
+        if (InputUtil.confirmOperation(scanner)) {
             inventory.addProductToInventory(item);
             System.out.println("Producto agregado...");
             System.out.println(item);
@@ -206,7 +193,7 @@ public class App {
         System.out.println("Producto a eliminar:");
         System.out.println(item);
         System.out.print("Confirma eliminar? ('SI' -- 'NO'): ");
-        if (confirmOperation(scanner)) {
+        if (InputUtil.confirmOperation(scanner)) {
             Product product = inventory.removeProductFromInventory(item.getCode());
             if (product != null) {
                 System.out.println("Producto eliminado...");
@@ -338,7 +325,7 @@ public class App {
         System.out.print("Ingrese la nueva descripción de la categoría: ");
         String description = InputUtil.enterString(scanner);
         System.out.print("Confirma actualizar? ('SI' -- 'NO'): ");
-        if (confirmOperation(scanner)) {
+        if (InputUtil.confirmOperation(scanner)) {
             Category item = catalog.getCategoryByCode(code);
             item.setName(name);
             item.setDescription(description);
@@ -381,7 +368,7 @@ public class App {
         System.out.print("Ingrese la descripción: ");
         String description = InputUtil.enterString(scanner);
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
-        if (confirmOperation(scanner)) {
+        if (InputUtil.confirmOperation(scanner)) {
             Category item = new Category(code, name, description, selectedProductType);
             catalog.addCategoryToCatalog(item);
             System.out.println("Categoría agregada...");
@@ -415,7 +402,7 @@ public class App {
         System.out.println("Categoría a eliminar:");
         System.out.println(item);
         System.out.print("Confirma eliminar? ('SI' -- 'NO'): ");
-        if (confirmOperation(scanner)) {
+        if (InputUtil.confirmOperation(scanner)) {
             Category category = catalog.removeCategoryFromCatalog(item.getCode(), inventory);
             if (category != null) {
                 System.out.println("Categoría eliminada...");

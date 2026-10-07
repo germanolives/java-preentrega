@@ -73,4 +73,17 @@ public final class InputUtil {
             }
         }
     }
+
+    public static boolean confirmOperation(Scanner scanner) {
+        while (true) {
+            String option = InputUtil.enterString(scanner);
+            if (option.equalsIgnoreCase("si")) {
+                return true;
+            } else if (option.equalsIgnoreCase("no")) {
+                return false;
+            } else {
+                System.out.println("Ingrese la opción correcta...");
+            }
+        }
+    }
 }
