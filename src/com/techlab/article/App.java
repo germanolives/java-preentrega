@@ -43,7 +43,6 @@ public class App {
         return output;
     }
 
-
     public static void showMenuOptions() {
         System.out.println("============================================");
         System.out.println("======  SISTEMA INVENTARIO - TECHLAB  ======");
@@ -73,18 +72,16 @@ public class App {
         }
     }
 
-
-    public static boolean listItems(Inventory inventory) {
+    public static void listItems(Inventory inventory) {
         if (inventory == null || inventory.isEmpty()) {
             System.out.println("Inventario vacío...");
-            return false;
+            return;
         }
         System.out.println("==> LISTA DE PRODUCTOS");
         int index = 1;
         for (Product item : inventory) {
             System.out.println(index++ + ". | " + item);
         }
-        return true;
     }
 
     public static String viewItemByName(Inventory inventory, Scanner scanner) {
@@ -290,17 +287,16 @@ public class App {
         }
     }
 
-    public static boolean listCategories(Catalog catalog) {
+    public static void listCategories(Catalog catalog) {
         if (catalog == null || catalog.isEmpty()) {
             System.out.println("Catálogo vacío...");
-            return false;
+            return;
         }
         System.out.println("==> LISTA DE CATEGORÍAS");
         int index = 1;
         for (Category item : catalog) {
             System.out.println(index++ + ". | " + item);
         }
-        return true;
     }
 
     public static String viewCateroryByName(Catalog catalog, Scanner scanner) {
