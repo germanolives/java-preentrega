@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public final class InputUtil {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private InputUtil () {}
 
     public static String enterString(Scanner scanner) {
@@ -51,17 +52,15 @@ public final class InputUtil {
         }
     }
 
-    public static LocalDate enterDate(Scanner scanner, LocalDate MIN_DATE, LocalDate MAX_DATE) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
+    public static LocalDate enterDate(Scanner scanner, LocalDate minDate, LocalDate maxDate) {
         while (true) {
             System.out.print("Ingrese la fecha (yyyy-MM-dd): ");
             String input = enterString(scanner);
 
             try {
                 LocalDate date = LocalDate.parse(input, formatter);
-                if (date.isBefore(MIN_DATE) || date.isAfter(MAX_DATE)) {
-                    System.out.println("Error: La fecha debe estar entre " + MIN_DATE + " y " + MAX_DATE + ".");
+                if (date.isBefore(minDate) || date.isAfter(maxDate)) {
+                    System.out.println("Error: La fecha debe estar entre " + minDate + " y " + maxDate + ".");
                     continue;
                 }
                 return date;
