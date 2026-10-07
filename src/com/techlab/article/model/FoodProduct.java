@@ -1,5 +1,7 @@
 package com.techlab.article.model;
 
+import com.techlab.article.util.ValidateUtil;
+
 import java.time.LocalDate;
 
 public class FoodProduct extends Product {
@@ -10,21 +12,11 @@ public class FoodProduct extends Product {
         if (category.getProductType() != ProductType.FOOD) {
             throw new IllegalArgumentException("La categoría debe ser tipo de producto '" + ProductType.FOOD.getDescription() + "'");
         }
-        this.expirationDate = validateExpirationDate(expirationDate);
-    }
-
-    private LocalDate validateExpirationDate(LocalDate expirationDate) {
-        if (expirationDate == null) {
-            throw new IllegalArgumentException("La fecha de vencimiento no puede ser nula");
-        }
-        if (expirationDate.isBefore(LocalDate.of(1999, 12, 31)) || expirationDate.isAfter(LocalDate.of(2100, 1, 1))) {
-            throw new IllegalArgumentException("Fecha de vencimiento fuera de rango permitido");
-        }
-        return expirationDate;
+        this.expirationDate = ValidateUtil.expirationDate(expirationDate);
     }
 
     public void setExpirationDate(LocalDate expirationDate) {
-        this.expirationDate = validateExpirationDate(expirationDate);
+        this.expirationDate =ValidateUtil.expirationDate(expirationDate);
     }
 
     public LocalDate getExpirationDate() {
@@ -38,7 +30,7 @@ public class FoodProduct extends Product {
 
     @Override
     public String getSpecificDetail() {
-        return "Fecha de vencimiento: " + this.expirationDate;
+        return "Fecha de vencimiento: " + getExpirationDate();
     }
 
 }

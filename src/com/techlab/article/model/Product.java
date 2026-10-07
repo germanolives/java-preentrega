@@ -1,5 +1,7 @@
 package com.techlab.article.model;
 
+import com.techlab.article.util.ValidateUtil;
+
 public abstract class Product {
     private String code;
     private String name;
@@ -7,47 +9,26 @@ public abstract class Product {
     private Category category;
 
     public Product(String code, String name, double price, Category category) {
-        this.code = validateString(code, "Código");
-        this.name = validateString(name, "Nombre");
-        this.price = validatePrice(price);
-        this.category = validateCategory(category);
-    }
-
-    private String validateString(String string, String message) {
-        if (string == null || string.isBlank()) {
-            throw new IllegalArgumentException("El valor de '" + message + "' del producto no puede estar vacío");
-        }
-        return string.trim();
-    }
-
-    private double validatePrice(double price) {
-        if (price <= 0) {
-            throw new IllegalArgumentException("El precio debe tener un valor mayor a cero");
-        }
-        return price;
-    }
-
-    private Category validateCategory(Category category) {
-        if (category == null) {
-            throw new IllegalArgumentException("El producto debe tener una categoría");
-        }
-        return category;
+        this.code = ValidateUtil.string(code, "Código");
+        this.name = ValidateUtil.string(name, "Nombre");
+        this.price = ValidateUtil.price(price);
+        this.category = ValidateUtil.category(category);
     }
 
     public void setCode(String code) {
-        this.code = validateString(code, "Código");
+        this.code = ValidateUtil.string(code, "Código");
     }
 
     public void setName(String name) {
-        this.name = validateString(name, "Nombre");
+        this.name = ValidateUtil.string(name, "Nombre");
     }
 
     public void setPrice(double price) {
-        this.price = validatePrice(price);
+        this.price = ValidateUtil.price(price);
     }
 
     public void setCategory(Category category) {
-        this.category = validateCategory(category);
+        this.category = ValidateUtil.category(category);
     }
 
     public String getCode() {

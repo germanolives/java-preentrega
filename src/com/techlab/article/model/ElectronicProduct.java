@@ -1,5 +1,7 @@
 package com.techlab.article.model;
 
+import com.techlab.article.util.ValidateUtil;
+
 public class ElectronicProduct extends Product {
     private int monthsOfWarranty;
 
@@ -9,18 +11,11 @@ public class ElectronicProduct extends Product {
         if (category.getProductType() != ProductType.ELECTRONIC) {
             throw new IllegalArgumentException("La categoría debe ser tipo de producto '" + ProductType.ELECTRONIC.getDescription() + "'");
         }
-        this.monthsOfWarranty = validateMonthsOfWarranty(monthsOfWarranty);
-    }
-
-    private int validateMonthsOfWarranty(int monthsOfWarranty) {
-        if (monthsOfWarranty < 0) {
-            throw new IllegalArgumentException("La garantía no puede tener un valor menor a cero");
-        }
-        return monthsOfWarranty;
+        this.monthsOfWarranty = ValidateUtil.monthsOfWarranty(monthsOfWarranty);
     }
 
     public void setWarranty(int monthsOfWarranty) {
-        this.monthsOfWarranty = validateMonthsOfWarranty(monthsOfWarranty);
+        this.monthsOfWarranty = ValidateUtil.monthsOfWarranty(monthsOfWarranty);
     }
 
     public int getMonthsOfWarranty() {
@@ -38,6 +33,7 @@ public class ElectronicProduct extends Product {
 
     @Override
     public String getSpecificDetail() {
-        return "Garantía: " + this.monthsOfWarranty + " meses";
+        return "Garantía: " + getMonthsOfWarranty() + " meses" +
+                " | Soporte telefónico: " + helpDeskPhoneNumber();
     }
 }

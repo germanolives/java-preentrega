@@ -1,5 +1,7 @@
 package com.techlab.article.model;
 
+import com.techlab.article.util.ValidateUtil;
+
 public class Category {
     private String code;
     private String name;
@@ -7,40 +9,26 @@ public class Category {
     private ProductType productType;
 
     public Category(String code, String name, String description, ProductType productType) {
-        this.code = validateString(code, "Código");
-        this.name = validateString(name, "Nombre");
-        this.description = validateString(description, "Descripción");
-        this.productType = validateProductType(productType);
-    }
-
-    private String validateString(String string, String message) {
-        if (string == null || string.isBlank()) {
-            throw new IllegalArgumentException("El valor de '" + message + "' de la categoría no puede estar vacío");
-        }
-        return string.trim();
-    }
-
-    private ProductType validateProductType (ProductType productType) {
-        if (productType == null) {
-            throw new IllegalArgumentException("El tipo de producto debe existir");
-        }
-        return productType;
+        this.code = ValidateUtil.string(code, "Código");
+        this.name = ValidateUtil.string(name, "Nombre");
+        this.description = ValidateUtil.string(description, "Descripción");
+        this.productType = ValidateUtil.productType(productType);
     }
 
     public void setCode(String code) {
-        this.code = validateString(code, "Código");
+        this.code = ValidateUtil.string(code, "Código");
     }
 
     public void setName(String name) {
-        this.name = validateString(name, "Nombre");
+        this.name = ValidateUtil.string(name, "Nombre");
     }
 
     public void setDescription(String description) {
-        this.description = validateString(description, "Descripción");
+        this.description = ValidateUtil.string(description, "Descripción");
     }
 
     public void setProductType (ProductType productType) {
-        this.productType = validateProductType(productType);
+        this.productType = ValidateUtil.productType(productType);
     }
 
     public String getCode() {
