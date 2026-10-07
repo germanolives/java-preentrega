@@ -13,6 +13,7 @@ import com.techlab.article.service.Catalog;
 import com.techlab.article.model.ProductType;
 import com.techlab.article.util.FormatUtil;
 import com.techlab.article.util.InputUtil;
+import com.techlab.article.util.ValidateUtil;
 
 public class App {
     private final static String[] MENU_OPTIONS = { "salir", "listar items", "buscar item por nombre",
@@ -22,26 +23,6 @@ public class App {
 
     private final static LocalDate MIN_DATE = LocalDate.of(1999, 12, 31);
     private final static LocalDate MAX_DATE = LocalDate.of(2100, 1, 1);
-
-    public static int validateOption(String textUser, String[] options) {
-        int output = -1;
-        String optionNumber = Integer.toString(options.length);
-        if (textUser != null && !textUser.isBlank() && textUser.length() <= optionNumber.length()) {
-            int charDigit = 0;
-            for (int i = 0; i < textUser.length(); i++) {
-                if (Character.isDigit(textUser.charAt(i))) {
-                    charDigit++;
-                }
-            }
-            if (charDigit == textUser.length()) {
-                int inputDigit = Integer.parseInt(textUser);
-                if (inputDigit >= 0 && inputDigit <= options.length - 1) {
-                    output = inputDigit;
-                }
-            }
-        }
-        return output;
-    }
 
     public static void showMenuOptions() {
         System.out.println("============================================");
@@ -457,7 +438,7 @@ public class App {
         do {
             showMenuOptions();
             String textUser = InputUtil.enterString(scanner);
-            menuOption = validateOption(textUser, MENU_OPTIONS);
+            menuOption = ValidateUtil.optionMenu(textUser, MENU_OPTIONS);
             switch (menuOption) {
                 case 0 -> System.out.println("Saliendo del sistema...");
                 case 1 -> listItems(inventory);

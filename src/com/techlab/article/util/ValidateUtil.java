@@ -10,6 +10,25 @@ public final class ValidateUtil {
         throw new UnsupportedOperationException("Clase utilitaria, no se debe instanciar.");
     }
 
+    public static int optionMenu(String textUser, String[] options) {
+        String optionNumber = Integer.toString(options.length);
+        if (textUser != null && !textUser.isBlank() && textUser.length() <= optionNumber.length()) {
+            int charDigit = 0;
+            for (int i = 0; i < textUser.length(); i++) {
+                if (Character.isDigit(textUser.charAt(i))) {
+                    charDigit++;
+                }
+            }
+            if (charDigit == textUser.length()) {
+                int inputDigit = Integer.parseInt(textUser);
+                if (inputDigit >= 0 && inputDigit <= options.length - 1) {
+                    return inputDigit;
+                }
+            }
+        }
+        return -1;
+    }
+
     public static String string(String string, String message) {
         if (string == null || string.isBlank()) {
             throw new IllegalArgumentException("El valor de '" + message + "' no puede estar vacío");
