@@ -33,6 +33,17 @@ public class ElectronicProduct extends Product {
     }
 
     @Override
+    public double calculateFinalPrice () {
+        if (this.monthsOfWarranty >= 24) {
+            return super.getPrice() * 1.2;
+        }
+        if (this.monthsOfWarranty >= 12){
+            return super.getPrice() * 1.1;
+        }
+        return super.getPrice();
+    }
+
+    @Override
     public String getSpecificDetail() {
         return "Garantía: " + getMonthsOfWarranty() + " meses" +
                 " | Soporte telefónico: " + helpDeskPhoneNumber();

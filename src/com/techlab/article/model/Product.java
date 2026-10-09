@@ -1,8 +1,9 @@
 package com.techlab.article.model;
 
+import com.techlab.article.interfaces.Calculable;
 import com.techlab.article.util.ValidateUtil;
 
-public abstract class Product {
+public abstract class Product implements Calculable {
     private String code;
     private String name;
     private double price;
@@ -55,7 +56,8 @@ public abstract class Product {
     public String toString() {
         return "Código: " + this.code +
                 " | Nombre: " + this.name +
-                " | Precio: $ " + this.price +
+                " | Precio Base: $ " + this.price +
+                " | Precio Final: $" + this.calculateFinalPrice() +
                 " | Detalle: " + this.getSpecificDetail() +
                 " | Tipo: " + this.getProductType().getDescription() +
                 (this.category != null ? " | Categoría: " + this.category.getName() : "");

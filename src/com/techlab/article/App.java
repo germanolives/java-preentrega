@@ -138,6 +138,7 @@ public class App {
         System.out.println("==> AGREGAR ITEM");
         ProductType selectedProductType = selectProductType(scanner);
         Category category = selectCategory(catalog, scanner, selectedProductType);
+        if (category == null) return false;
         String code;
         while (true) {
             System.out.print("Ingrese el código: ");
