@@ -1,0 +1,16 @@
+# Archivos compilados de Java
+out/
+target/
+*.class
+
+# Entorno e IDEs
+.idea/
+.vscode/
+.direnv/
+.envrc
+
+# Archivos de proyecto de IntelliJ
+*.iml
+
+# Logs y temporales
+*.log
