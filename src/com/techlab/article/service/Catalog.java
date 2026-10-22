@@ -23,54 +23,6 @@ public class Catalog implements Iterable<Category> {
         return this.categories.isEmpty();
     }
 
-    public Category getCategoryByCode(String code) {
-        if (code == null || code.isBlank() || this.categories.isEmpty())
-            return null;
-        return this.categories.stream()
-                .filter(item -> item.getCode().equalsIgnoreCase(code.trim()))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public Category getCategoryByName(String name) {
-        if (name == null || name.isBlank() || this.categories.isEmpty())
-            return null;
-        return this.categories.stream()
-                .filter(item -> item.getName().equalsIgnoreCase(name.trim()))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public boolean isCategoryCodeIntoCatalog(String code) {
-        return this.getCategoryByCode(code) != null;
-    }
-
-    public boolean isCategoryNameIntoCatalog(String name) {
-        return this.getCategoryByName(name) != null;
-    }
-
-    public List<Category> getCategories() {
-        return Collections.unmodifiableList(this.categories);
-    }
-
-    public int getIndexByName(String name) {
-        if (name == null || name.isBlank())
-            return -1;
-        return IntStream.range(0, this.categories.size())
-                .filter(item -> this.categories.get(item).getName().equalsIgnoreCase(name.trim()))
-                .findFirst()
-                .orElse(-1);
-    }
-
-    public int getIndexByCode(String code) {
-        if (code == null || code.isBlank())
-            return -1;
-        return IntStream.range(0, this.categories.size())
-                .filter(item -> this.categories.get(item).getCode().equalsIgnoreCase(code.trim()))
-                .findFirst()
-                .orElse(-1);
-    }
-
     public void addCategoryToCatalog(Category category) {
         if (category == null) {
             throw new IllegalArgumentException("La categoría debe existir");
@@ -82,15 +34,6 @@ public class Catalog implements Iterable<Category> {
             throw new IllegalArgumentException("Ese nombre de categoría ya existe en el catálogo");
         }
         this.categories.add(category);
-    }
-
-    public boolean hasCategoryInInventory(String code, Inventory inventory) {
-        if (code == null || code.isBlank() || inventory == null || inventory.getProducts() == null) {
-            return false;
-        }
-        return inventory.getProducts().stream()
-                .filter(item -> item != null && item.getCategory() != null)
-                .anyMatch(item -> item.getCategory().getCode().equalsIgnoreCase(code.trim()));
     }
 
     public Category removeCategoryFromCatalog(String code, Inventory inventory) {
@@ -109,4 +52,62 @@ public class Catalog implements Iterable<Category> {
         }
         return null;
     }
+    
+    public Category getCategoryByCode(String code) {
+        if (code == null || code.isBlank() || this.categories.isEmpty())
+            return null;
+        return this.categories.stream()
+                .filter(item -> item.getCode().equalsIgnoreCase(code.trim()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean isCategoryCodeIntoCatalog(String code) {
+        return this.getCategoryByCode(code) != null;
+    }
+
+    public Category getCategoryByName(String name) {
+        if (name == null || name.isBlank() || this.categories.isEmpty())
+            return null;
+        return this.categories.stream()
+                .filter(item -> item.getName().equalsIgnoreCase(name.trim()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public int getIndexByName(String name) {
+        if (name == null || name.isBlank())
+            return -1;
+        return IntStream.range(0, this.categories.size())
+                .filter(item -> this.categories.get(item).getName().equalsIgnoreCase(name.trim()))
+                .findFirst()
+                .orElse(-1);
+    }
+
+    public int getIndexByCode(String code) {
+        if (code == null || code.isBlank())
+            return -1;
+        return IntStream.range(0, this.categories.size())
+                .filter(item -> this.categories.get(item).getCode().equalsIgnoreCase(code.trim()))
+                .findFirst()
+                .orElse(-1);
+            }
+
+    public List<Category> getCategories() {
+        return Collections.unmodifiableList(this.categories);
+    }
+    
+    public boolean isCategoryNameIntoCatalog(String name) {
+        return this.getCategoryByName(name) != null;
+    }
+            
+    public boolean hasCategoryInInventory(String code, Inventory inventory) {
+        if (code == null || code.isBlank() || inventory == null || inventory.getProducts() == null) {
+            return false;
+        }
+        return inventory.getProducts().stream()
+                .filter(item -> item != null && item.getCategory() != null)
+                .anyMatch(item -> item.getCategory().getCode().equalsIgnoreCase(code.trim()));
+    }
+
 }

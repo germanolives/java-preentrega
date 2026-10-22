@@ -1,8 +1,9 @@
 package com.techlab.article.model;
 
+import com.techlab.article.interfaces.Identifiable;
 import com.techlab.article.util.ValidateUtil;
 
-public class Category {
+public class Category implements Identifiable {
     private String code;
     private String name;
     private String description;
@@ -31,6 +32,7 @@ public class Category {
         this.productType = ValidateUtil.productType(productType);
     }
 
+    @Override
     public String getCode() {
         return this.code;
     }

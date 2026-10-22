@@ -1,9 +1,10 @@
 package com.techlab.article.model;
 
 import com.techlab.article.interfaces.Calculable;
+import com.techlab.article.interfaces.Identifiable;
 import com.techlab.article.util.ValidateUtil;
 
-public abstract class Product implements Calculable {
+public abstract class Product implements Calculable, Identifiable {
     private String code;
     private String name;
     private double price;
@@ -32,6 +33,7 @@ public abstract class Product implements Calculable {
         this.category = ValidateUtil.category(category);
     }
 
+    @Override
     public String getCode() {
         return this.code;
     }
