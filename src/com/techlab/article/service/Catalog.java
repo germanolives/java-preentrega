@@ -1,111 +1,54 @@
 package com.techlab.article.service;
 
 import com.techlab.article.model.Category;
+import com.techlab.article.repository.Repository;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.stream.IntStream;
 
-public class Catalog implements Iterable<Category> {
-    private final List<Category> categories;
+public class Catalog extends Repository<Category> {
 
-    public Catalog() {
-        this.categories = new ArrayList<>();
-    }
 
-    public Iterator<Category> iterator() {
-        return Collections.unmodifiableList(this.categories).iterator();
-    }
-
-    public boolean isEmpty() {
-        return this.categories.isEmpty();
-    }
-
-    public void addCategoryToCatalog(Category category) {
-        if (category == null) {
-            throw new IllegalArgumentException("La categoría debe existir");
+    @Override
+    public void addItemToRepository(Category item) {
+        if (item == null) {
+            throw new IllegalArgumentException("El item debe existir");
         }
-        if (this.isCategoryCodeIntoCatalog(category.getCode())) {
-            throw new IllegalArgumentException("Ese código de categoría ya existe en el catálogo");
+        if (this.isItemCodeIntoRepository(item.getCode())) {
+            throw new IllegalArgumentException("Ese código de item ya existe en el repositorio");
         }
-        if (this.isCategoryNameIntoCatalog(category.getName())) {
-            throw new IllegalArgumentException("Ese nombre de categoría ya existe en el catálogo");
+        if (this.isItemNameIntoRepository(item.getName())) {
+            throw new IllegalArgumentException("Ese nombre de item ya existe en el repositorio");
         }
-        this.categories.add(category);
+        super.list.add(item);
     }
 
-    public Category removeCategoryFromCatalog(String code, Inventory inventory) {
-        if (code != null && !code.isBlank() && !this.categories.isEmpty() && inventory != null) {
+    @Override
+    public Category removeItemFromRepository (String code) {
+        return super.removeItemFromRepository(code);
+    }
+
+    public Category removeItemFromRepository(String code, Inventory inventory) {
+        if (code != null && !code.isBlank() && !super.list.isEmpty() && inventory != null) {
             if (!hasCategoryInInventory(code, inventory)) {
-                Category category = this.categories.stream()
+                Category category = super.list.stream()
                         .filter(item -> item != null && item.getCode() != null)
                         .filter(item -> item.getCode().equalsIgnoreCase(code.trim()))
                         .findFirst()
                         .orElse(null);
                 if (category != null) {
-                    this.categories.remove(category);
+                    super.list.remove(category);
                     return category;
                 }
             }
         }
         return null;
     }
-    
-    public Category getCategoryByCode(String code) {
-        if (code == null || code.isBlank() || this.categories.isEmpty())
-            return null;
-        return this.categories.stream()
-                .filter(item -> item.getCode().equalsIgnoreCase(code.trim()))
-                .findFirst()
-                .orElse(null);
-    }
 
-    public boolean isCategoryCodeIntoCatalog(String code) {
-        return this.getCategoryByCode(code) != null;
-    }
 
-    public Category getCategoryByName(String name) {
-        if (name == null || name.isBlank() || this.categories.isEmpty())
-            return null;
-        return this.categories.stream()
-                .filter(item -> item.getName().equalsIgnoreCase(name.trim()))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public int getIndexByName(String name) {
-        if (name == null || name.isBlank())
-            return -1;
-        return IntStream.range(0, this.categories.size())
-                .filter(item -> this.categories.get(item).getName().equalsIgnoreCase(name.trim()))
-                .findFirst()
-                .orElse(-1);
-    }
-
-    public int getIndexByCode(String code) {
-        if (code == null || code.isBlank())
-            return -1;
-        return IntStream.range(0, this.categories.size())
-                .filter(item -> this.categories.get(item).getCode().equalsIgnoreCase(code.trim()))
-                .findFirst()
-                .orElse(-1);
-            }
-
-    public List<Category> getCategories() {
-        return Collections.unmodifiableList(this.categories);
-    }
-    
-    public boolean isCategoryNameIntoCatalog(String name) {
-        return this.getCategoryByName(name) != null;
-    }
-            
     public boolean hasCategoryInInventory(String code, Inventory inventory) {
-        if (code == null || code.isBlank() || inventory == null || inventory.getProducts() == null) {
+        if (code == null || code.isBlank() || inventory == null || inventory.getList() == null) {
             return false;
         }
-        return inventory.getProducts().stream()
+        return inventory.getList().stream()
                 .filter(item -> item != null && item.getCategory() != null)
                 .anyMatch(item -> item.getCategory().getCode().equalsIgnoreCase(code.trim()));
     }

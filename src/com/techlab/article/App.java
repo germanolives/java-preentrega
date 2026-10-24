@@ -60,7 +60,7 @@ public class App {
         System.out.println("==> BUSCAR ITEM POR NOMBRE");
         System.out.print("Ingrese el nombre del producto: ");
         String name = InputUtil.enterString(scanner);
-        Product item = inventory.getProductByName(name);
+        Product item = inventory.getItemByName(name);
         if (item == null) {
             System.out.println("Producto inexistente...");
             return "";
@@ -78,7 +78,7 @@ public class App {
         System.out.println("==> BUSCAR ITEM POR CÓDIGO");
         System.out.print("Ingrese el código del producto: ");
         String code = InputUtil.enterString(scanner);
-        Product item = inventory.getProductByCode(code);
+        Product item = inventory.getItemByCode(code);
         if (item == null) {
             System.out.println("Producto inexistente...");
             return "";
@@ -102,7 +102,7 @@ public class App {
         double price = InputUtil.enterPrice(scanner);
         int monthsOfWarranty = 0;
         LocalDate expirationDate = null;
-        Product item = inventory.getProductByCode(code);
+        Product item = inventory.getItemByCode(code);
         if (item instanceof ElectronicProduct) {
             monthsOfWarranty = InputUtil.enterInteger(scanner, "meses de garantía");
         } else if (item instanceof FoodProduct) {
@@ -143,7 +143,7 @@ public class App {
         while (true) {
             System.out.print("Ingrese el código: ");
             code = InputUtil.enterString(scanner);
-            if (!inventory.isProductIntoInventory(code)) {
+            if (!inventory.isItemCodeIntoRepository(code)) {
                 break;
             }
             System.out.println("Ese código ya existe...");
@@ -167,7 +167,7 @@ public class App {
         }
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
         if (InputUtil.confirmOperation(scanner)) {
-            inventory.addProductToInventory(item);
+            inventory.addItemToRepository(item);
             System.out.println("Producto agregado...");
             System.out.println(item);
             return true;
@@ -186,7 +186,7 @@ public class App {
         System.out.println("==> ELIMINAR ITEM");
         System.out.println("Ingrese el código del producto: ");
         String code = InputUtil.enterString(scanner);
-        Product item = inventory.getProductByCode(code);
+        Product item = inventory.getItemByCode(code);
         if (item == null) {
             System.out.println("No existe ese producto en el inventario...");
             return false;
@@ -195,7 +195,7 @@ public class App {
         System.out.println(item);
         System.out.print("Confirma eliminar? ('SI' -- 'NO'): ");
         if (InputUtil.confirmOperation(scanner)) {
-            Product product = inventory.removeProductFromInventory(item.getCode());
+            Product product = inventory.removeItemFromRepository(item.getCode());
             if (product != null) {
                 System.out.println("Producto eliminado...");
                 System.out.println(product);
@@ -231,7 +231,7 @@ public class App {
     }
 
     public static Category selectCategory(Catalog catalog, Scanner scanner, ProductType productType) {
-        List<Category> filterCatalog = catalog.getCategories().stream()
+        List<Category> filterCatalog = catalog.getList().stream()
                 .filter(item -> item.getProductType() == productType)
                 .toList();
         if (filterCatalog.isEmpty()) {
@@ -276,7 +276,7 @@ public class App {
         System.out.println("==> BUSCAR CATEGORÍA POR NOMBRE");
         System.out.print("Ingrese el nombre de la categoría: ");
         String name = InputUtil.enterString(scanner);
-        Category item = catalog.getCategoryByName(name);
+        Category item = catalog.getItemByName(name);
         if (item == null) {
             System.out.println("Categoría inexistente...");
             return "";
@@ -294,7 +294,7 @@ public class App {
         System.out.println("==> BUSCAR CATEGORÍA POR CÓDIGO");
         System.out.print("Ingrese el código de la categoría: ");
         String code = InputUtil.enterString(scanner);
-        Category item = catalog.getCategoryByCode(code);
+        Category item = catalog.getItemByCode(code);
         if (item == null) {
             System.out.println("Categoría inexistente...");
             return "";
@@ -317,7 +317,7 @@ public class App {
         while (true) {
             System.out.print("Ingrese el nuevo nombre de la categoría: ");
             name = InputUtil.enterString(scanner);
-            if (!catalog.isCategoryNameIntoCatalog(name)
+            if (!catalog.isItemNameIntoRepository(name)
                     || catalog.getIndexByCode(code) == catalog.getIndexByName(name)) {
                 break;
             }
@@ -327,7 +327,7 @@ public class App {
         String description = InputUtil.enterString(scanner);
         System.out.print("Confirma actualizar? ('SI' -- 'NO'): ");
         if (InputUtil.confirmOperation(scanner)) {
-            Category item = catalog.getCategoryByCode(code);
+            Category item = catalog.getItemByCode(code);
             item.setName(name);
             item.setDescription(description);
             System.out.println("Categoría actualizada...");
@@ -353,7 +353,7 @@ public class App {
             selectedProductType = selectProductType(scanner);
             System.out.print("Ingrese el código: ");
             code = InputUtil.enterString(scanner);
-            if (!catalog.isCategoryCodeIntoCatalog(code)) {
+            if (!catalog.isItemCodeIntoRepository(code)) {
                 break;
             }
             System.out.println("Ese código de categoría ya existe...");
@@ -361,7 +361,7 @@ public class App {
         while (true) {
             System.out.print("Ingrese el nombre: ");
             name = InputUtil.enterString(scanner);
-            if (!catalog.isCategoryNameIntoCatalog(name)) {
+            if (!catalog.isItemNameIntoRepository(name)) {
                 break;
             }
             System.out.println("Ese nombre de categoría ya existe...");
@@ -371,7 +371,7 @@ public class App {
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
         if (InputUtil.confirmOperation(scanner)) {
             Category item = new Category(code, name, description, selectedProductType);
-            catalog.addCategoryToCatalog(item);
+            catalog.addItemToRepository(item);
             System.out.println("Categoría agregada...");
             System.out.println(item);
             return true;
@@ -390,7 +390,7 @@ public class App {
         System.out.println("==> ELIMINAR CATEGORÍA");
         System.out.println("Ingrese el código de la categoría: ");
         String code = InputUtil.enterString(scanner);
-        Category item = catalog.getCategoryByCode(code);
+        Category item = catalog.getItemByCode(code);
         if (item == null) {
             System.out.println("No existe esa categoría en el catálogo...");
             return false;
@@ -404,7 +404,7 @@ public class App {
         System.out.println(item);
         System.out.print("Confirma eliminar? ('SI' -- 'NO'): ");
         if (InputUtil.confirmOperation(scanner)) {
-            Category category = catalog.removeCategoryFromCatalog(item.getCode(), inventory);
+            Category category = catalog.removeItemFromRepository(item.getCode(), inventory);
             if (category != null) {
                 System.out.println("Categoría eliminada...");
                 System.out.println(category);
