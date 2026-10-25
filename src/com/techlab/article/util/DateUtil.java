@@ -3,7 +3,7 @@ package com.techlab.article.util;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class DateUtil {
+public final class DateUtil {
 
     private DateUtil() {
         throw new UnsupportedOperationException("Clase utilitaria, no se debe instanciar.");

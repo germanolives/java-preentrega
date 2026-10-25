@@ -7,7 +7,11 @@ import com.techlab.article.util.InputUtil;
 
 import java.util.Scanner;
 
-public class ConsoleView {
+public final class ConsoleView {
+
+    private ConsoleView() {
+        throw new UnsupportedOperationException("Clase utilitaria, no se debe instanciar.");
+    }
 
     public static <T extends Identifiable> void listItems(Repository<T> repository, String title) {
         if (repository == null || repository.isEmpty()) {
@@ -47,7 +51,7 @@ public class ConsoleView {
             return "";
         }
         System.out.println("==> BUSCAR " + title.toUpperCase() + " POR CÓDIGO");
-        System.out.print("Ingrese el nombre: ");
+        System.out.print("Ingrese el código: ");
         String code = InputUtil.enterString(scanner);
         T item = repository.getItemByCode(code);
         if (item == null) {
