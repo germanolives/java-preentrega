@@ -1,19 +1,15 @@
 package com.techlab.article;
 
-import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.List;
 
-import com.techlab.article.model.ElectronicProduct;
-import com.techlab.article.model.FoodProduct;
-import com.techlab.article.model.Product;
 import com.techlab.article.service.Inventory;
-import com.techlab.article.model.Category;
 import com.techlab.article.service.Catalog;
-import com.techlab.article.model.ProductType;
 import com.techlab.article.util.FormatUtil;
 import com.techlab.article.util.InputUtil;
 import com.techlab.article.util.ValidateUtil;
+import com.techlab.article.menu.ConsoleView;
+import com.techlab.article.menu.ProductMenu;
+import com.techlab.article.menu.CategoryMenu;
 
 public class App {
     private final static String[] MENU_OPTIONS = { "salir", "listar items", "buscar item por nombre",
@@ -21,8 +17,8 @@ public class App {
             "buscar categoría por nombre", "buscar categoría por código", "modificar categoría", "agregar categoría",
             "eliminar categoría" };
 
-    private final static LocalDate MIN_DATE = LocalDate.of(1999, 12, 31);
-    private final static LocalDate MAX_DATE = LocalDate.of(2100, 1, 1);
+    /*private final static LocalDate MIN_DATE = LocalDate.of(1999, 12, 31);
+    private final static LocalDate MAX_DATE = LocalDate.of(2100, 1, 1);*/
 
     public static void showMenuOptions() {
         System.out.println("============================================");
@@ -40,7 +36,7 @@ public class App {
         System.out.print("Elija una  opción: ");
     }
 
-    public static void listItems(Inventory inventory) {
+    /*public static void listItems(Inventory inventory) {
         if (inventory == null || inventory.isEmpty()) {
             System.out.println("Inventario vacío...");
             return;
@@ -50,9 +46,9 @@ public class App {
         for (Product item : inventory) {
             System.out.println(index++ + ". | " + item);
         }
-    }
+    }*/
 
-    public static String viewItemByName(Inventory inventory, Scanner scanner) {
+    /*public static String viewItemByName(Inventory inventory, Scanner scanner) {
         if (inventory == null || inventory.isEmpty()) {
             System.out.println("Inventario vacío...");
             return "";
@@ -68,9 +64,9 @@ public class App {
             System.out.println(item);
             return item.getName();
         }
-    }
+    }*/
 
-    public static String viewItemByCode(Inventory inventory, Scanner scanner) {
+    /*public static String viewItemByCode(Inventory inventory, Scanner scanner) {
         if (inventory == null || inventory.isEmpty()) {
             System.out.println("Inventario vacío...");
             return "";
@@ -86,15 +82,15 @@ public class App {
             System.out.println(item);
             return item.getCode();
         }
-    }
+    }*/
 
-    public static boolean modifyItem(Inventory inventory, Scanner scanner) {
+    /*public static boolean modifyItem(Inventory inventory, Scanner scanner) {
         if (inventory == null || inventory.isEmpty()) {
             System.out.println("El inventario no está disponible para actualizaciones...");
             return false;
         }
         System.out.println("==> MODIFICAR ITEM");
-        String code = viewItemByCode(inventory, scanner);
+        String code = ConsoleView.viewItemByCode(inventory, scanner, "productos");
         if (code.isEmpty())
             return false;
         System.out.print("Ingrese el nuevo nombre del producto: ");
@@ -124,9 +120,9 @@ public class App {
             System.out.println("ℹ️ Operación cancelada por el usuario...");
             return false;
         }
-    }
+    }*/
 
-    public static boolean addItem(Inventory inventory, Catalog catalog, Scanner scanner) {
+    /*public static boolean addItem(Inventory inventory, Catalog catalog, Scanner scanner) {
         if (inventory == null) {
             System.out.println("El inventario no está disponible...");
             return false;
@@ -176,9 +172,9 @@ public class App {
             return false;
         }
 
-    }
+    }*/
 
-    public static boolean deleteItem(Inventory inventory, Scanner scanner) {
+    /*public static boolean deleteItem(Inventory inventory, Scanner scanner) {
         if (inventory == null || inventory.isEmpty()) {
             System.out.println("Inventario vacío...");
             return false;
@@ -207,9 +203,9 @@ public class App {
             System.out.println("ℹ️ Operación cancelada por el usuario.");
             return false;
         }
-    }
+    }*/
 
-    public static ProductType selectProductType(Scanner scanner) {
+    /*public static ProductType selectProductType(Scanner scanner) {
         ProductType[] types = ProductType.values();
         System.out.println("Tipos de producto");
         int index = 1;
@@ -228,9 +224,9 @@ public class App {
                 System.out.println("Opción incorrecta, ingrese un número...");
             }
         }
-    }
+    }*/
 
-    public static Category selectCategory(Catalog catalog, Scanner scanner, ProductType productType) {
+    /*public static Category selectCategory(Catalog catalog, Scanner scanner, ProductType productType) {
         List<Category> filterCatalog = catalog.getList().stream()
                 .filter(item -> item.getProductType() == productType)
                 .toList();
@@ -254,9 +250,9 @@ public class App {
                 System.out.println("Opción incorrecta...");
             }
         }
-    }
+    }*/
 
-    public static void listCategories(Catalog catalog) {
+    /*public static void listCategories(Catalog catalog) {
         if (catalog == null || catalog.isEmpty()) {
             System.out.println("Catálogo vacío...");
             return;
@@ -266,9 +262,9 @@ public class App {
         for (Category item : catalog) {
             System.out.println(index++ + ". | " + item);
         }
-    }
+    }*/
 
-    public static String viewCateroryByName(Catalog catalog, Scanner scanner) {
+    /*public static String viewCateroryByName(Catalog catalog, Scanner scanner) {
         if (catalog == null || catalog.isEmpty()) {
             System.out.println("Catálogo vacío");
             return "";
@@ -284,9 +280,9 @@ public class App {
             System.out.println(item);
             return item.getName();
         }
-    }
+    }*/
 
-    public static String viewCategoryByCode(Catalog catalog, Scanner scanner) {
+    /*public static String viewCategoryByCode(Catalog catalog, Scanner scanner) {
         if (catalog == null || catalog.isEmpty()) {
             System.out.println("Catálogo vacío...");
             return "";
@@ -302,15 +298,15 @@ public class App {
             System.out.println(item);
             return item.getCode();
         }
-    }
+    }*/
 
-    public static boolean modifyCategory(Catalog catalog, Scanner scanner) {
+    /*public static boolean modifyCategory(Catalog catalog, Scanner scanner) {
         if (catalog == null || catalog.isEmpty()) {
             System.out.println("El catálogo no está disponible para actualizaciones");
             return false;
         }
         System.out.println("==> MODIFICAR CATEGORÍA");
-        String code = viewCategoryByCode(catalog, scanner);
+        String code = ConsoleView.viewItemByCode(catalog, scanner, "categoría");
         if (code.isEmpty())
             return false;
         String name;
@@ -337,9 +333,9 @@ public class App {
             System.out.println("ℹ️ Operación cancelada por el usuario.");
             return false;
         }
-    }
+    }*/
 
-    public static boolean addCategory(Catalog catalog, Scanner scanner) {
+    /*public static boolean addCategory(Catalog catalog, Scanner scanner) {
         if (catalog == null) {
             System.out.println("El catálogo no está disponible");
             return false;
@@ -380,9 +376,9 @@ public class App {
             return false;
         }
 
-    }
+    }*/
 
-    public static boolean deleteCategory(Catalog catalog, Inventory inventory, Scanner scanner) {
+    /*public static boolean deleteCategory(Catalog catalog, Inventory inventory, Scanner scanner) {
         if (catalog == null || catalog.isEmpty()) {
             System.out.println("Catálogo vacío...");
             return false;
@@ -416,7 +412,7 @@ public class App {
             System.out.println("ℹ️ Operación cancelada por el usuario.");
             return false;
         }
-    }
+    }*/
 
     public static void main(String[] args) {
         Inventory inventory = new Inventory();
@@ -429,18 +425,18 @@ public class App {
             menuOption = ValidateUtil.optionMenu(textUser, MENU_OPTIONS);
             switch (menuOption) {
                 case 0 -> System.out.println("Saliendo del sistema...");
-                case 1 -> listItems(inventory);
-                case 2 -> viewItemByName(inventory, scanner);
-                case 3 -> viewItemByCode(inventory, scanner);
-                case 4 -> modifyItem(inventory, scanner);
-                case 5 -> addItem(inventory, catalog, scanner);
-                case 6 -> deleteItem(inventory, scanner);
-                case 7 -> listCategories(catalog);
-                case 8 -> viewCateroryByName(catalog, scanner);
-                case 9 -> viewCategoryByCode(catalog, scanner);
-                case 10 -> modifyCategory(catalog, scanner);
-                case 11 -> addCategory(catalog, scanner);
-                case 12 -> deleteCategory(catalog, inventory, scanner);
+                case 1 -> ConsoleView.listItems(inventory, "lista de productos");
+                case 2 -> ConsoleView.viewItemByName(inventory, scanner, "producto");
+                case 3 -> ConsoleView.viewItemByCode(inventory, scanner, "producto");
+                case 4 -> ProductMenu.modifyItem(inventory, scanner);
+                case 5 -> ProductMenu.addItem(inventory, catalog, scanner);
+                case 6 -> ProductMenu.deleteItem(inventory, scanner);
+                case 7 -> ConsoleView.listItems(catalog, "lista de categorías");
+                case 8 -> ConsoleView.viewItemByName(catalog, scanner, "categoría");
+                case 9 -> ConsoleView.viewItemByCode(catalog, scanner, "categoría");
+                case 10 -> CategoryMenu.modifyCategory(catalog, scanner);
+                case 11 -> CategoryMenu.addCategory(catalog, scanner);
+                case 12 -> CategoryMenu.deleteCategory(catalog, inventory, scanner);
                 default -> System.out.println("Opción incorrecta...");
             }
         } while (menuOption != 0);
