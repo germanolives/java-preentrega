@@ -14,7 +14,7 @@ public class ProductMenu {
     private final Catalog catalog;
     private final Scanner scanner;
 
-    public ProductMenu (Inventory inventory, Catalog catalog, Scanner scanner) {
+    public ProductMenu(Inventory inventory, Catalog catalog, Scanner scanner) {
         this.inventory = inventory;
         this.catalog = catalog;
         this.scanner = scanner;
@@ -85,7 +85,8 @@ public class ProductMenu {
         System.out.println("==> AGREGAR ITEM");
         ProductType selectedProductType = MenuUtil.selectProductType(this.scanner);
         Category category = MenuUtil.selectCategory(this.catalog, this.scanner, selectedProductType);
-        if (category == null) return false;
+        if (category == null)
+            return false;
         String code;
         while (true) {
             System.out.print("Ingrese el código: ");

@@ -3,9 +3,7 @@ package com.techlab.article.service;
 import com.techlab.article.model.Category;
 import com.techlab.article.repository.Repository;
 
-
 public class Catalog extends Repository<Category> {
-
 
     @Override
     public void addItemToRepository(Category item) {
@@ -22,7 +20,7 @@ public class Catalog extends Repository<Category> {
     }
 
     @Override
-    public Category removeItemFromRepository (String code) {
+    public Category removeItemFromRepository(String code) {
         return super.removeItemFromRepository(code);
     }
 
@@ -42,7 +40,6 @@ public class Catalog extends Repository<Category> {
         }
         return null;
     }
-
 
     public boolean hasCategoryInInventory(String code, Inventory inventory) {
         if (code == null || code.isBlank() || inventory == null || inventory.getList() == null) {

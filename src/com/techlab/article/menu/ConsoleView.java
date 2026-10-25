@@ -7,7 +7,6 @@ import com.techlab.article.util.InputUtil;
 
 import java.util.Scanner;
 
-
 public class ConsoleView {
 
     public static <T extends Identifiable> void listItems(Repository<T> repository, String title) {
@@ -15,14 +14,15 @@ public class ConsoleView {
             System.out.println("La " + title + " está vacía...");
             return;
         }
-        System.out.println("==> " +  title.toUpperCase());
+        System.out.println("==> " + title.toUpperCase());
         int index = 1;
         for (T item : repository) {
             System.out.println(index++ + ". | " + item);
         }
     }
 
-    public static <T extends Identifiable> String viewItemByName(Repository<T> repository, Scanner scanner, String title) {
+    public static <T extends Identifiable> String viewItemByName(Repository<T> repository, Scanner scanner,
+            String title) {
         if (repository == null || repository.isEmpty()) {
             System.out.println("La lista de " + title + "s está vacía...");
             return "";
@@ -40,7 +40,8 @@ public class ConsoleView {
         }
     }
 
-    public static <T extends Identifiable> String viewItemByCode(Repository<T> repository, Scanner scanner, String title) {
+    public static <T extends Identifiable> String viewItemByCode(Repository<T> repository, Scanner scanner,
+            String title) {
         if (repository == null || repository.isEmpty()) {
             System.out.println("La lista de " + title + "s está vacía...");
             return "";

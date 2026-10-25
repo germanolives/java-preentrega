@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MenuUtil {
+
+    private MenuUtil() {
+        throw new UnsupportedOperationException("Clase utilitaria, no se debe instanciar.");
+    }
+
     public static ProductType selectProductType(Scanner scanner) {
         ProductType[] types = ProductType.values();
         System.out.println("Tipos de producto");

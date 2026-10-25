@@ -14,7 +14,7 @@ public class CategoryMenu {
     private final Catalog catalog;
     private final Scanner scanner;
 
-    public CategoryMenu (Inventory inventory, Catalog catalog, Scanner scanner) {
+    public CategoryMenu(Inventory inventory, Catalog catalog, Scanner scanner) {
         this.inventory = inventory;
         this.catalog = catalog;
         this.scanner = scanner;

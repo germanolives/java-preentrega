@@ -7,16 +7,15 @@ import java.util.Collections;
 import java.util.stream.IntStream;
 import com.techlab.article.interfaces.Identifiable;
 
-
 public abstract class Repository<T extends Identifiable> implements Iterable<T> {
     protected final List<T> list;
 
-    public Repository () {
+    public Repository() {
         this.list = new ArrayList<>();
     }
 
     @Override
-    public Iterator<T> iterator () {
+    public Iterator<T> iterator() {
         return Collections.unmodifiableList(this.list).iterator();
     }
 
@@ -28,7 +27,7 @@ public abstract class Repository<T extends Identifiable> implements Iterable<T> 
         if (name == null || name.isBlank())
             return -1;
         return IntStream.range(0, this.list.size())
-                .filter(i->this.list.get(i) != null && this.list.get(i).getName() != null)
+                .filter(i -> this.list.get(i) != null && this.list.get(i).getName() != null)
                 .filter(i -> this.list.get(i).getName().equalsIgnoreCase(name.trim()))
                 .findFirst()
                 .orElse(-1);
@@ -38,7 +37,7 @@ public abstract class Repository<T extends Identifiable> implements Iterable<T> 
         if (code == null || code.isBlank())
             return -1;
         return IntStream.range(0, this.list.size())
-                .filter(i->this.list.get(i) != null && this.list.get(i).getCode() != null)
+                .filter(i -> this.list.get(i) != null && this.list.get(i).getCode() != null)
                 .filter(i -> this.list.get(i).getCode().equalsIgnoreCase(code.trim()))
                 .findFirst()
                 .orElse(-1);

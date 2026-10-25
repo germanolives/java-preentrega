@@ -32,7 +32,6 @@ public class App {
         System.out.print("Elija una  opción: ");
     }
 
-
     public static void main(String[] args) {
         Inventory inventory = new Inventory();
         Catalog catalog = new Catalog();
