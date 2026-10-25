@@ -7,7 +7,6 @@ import com.techlab.article.service.Catalog;
 import com.techlab.article.util.FormatUtil;
 import com.techlab.article.util.InputUtil;
 import com.techlab.article.util.ValidateUtil;
-import com.techlab.article.menu.ConsoleView;
 import com.techlab.article.menu.ProductMenu;
 import com.techlab.article.menu.CategoryMenu;
 
@@ -16,9 +15,6 @@ public class App {
             "buscar item por código", "modificar item", "agregar item", "eliminar item", "listar categorías",
             "buscar categoría por nombre", "buscar categoría por código", "modificar categoría", "agregar categoría",
             "eliminar categoría" };
-
-    /*private final static LocalDate MIN_DATE = LocalDate.of(1999, 12, 31);
-    private final static LocalDate MAX_DATE = LocalDate.of(2100, 1, 1);*/
 
     public static void showMenuOptions() {
         System.out.println("============================================");
@@ -36,388 +32,13 @@ public class App {
         System.out.print("Elija una  opción: ");
     }
 
-    /*public static void listItems(Inventory inventory) {
-        if (inventory == null || inventory.isEmpty()) {
-            System.out.println("Inventario vacío...");
-            return;
-        }
-        System.out.println("==> LISTA DE PRODUCTOS");
-        int index = 1;
-        for (Product item : inventory) {
-            System.out.println(index++ + ". | " + item);
-        }
-    }*/
-
-    /*public static String viewItemByName(Inventory inventory, Scanner scanner) {
-        if (inventory == null || inventory.isEmpty()) {
-            System.out.println("Inventario vacío...");
-            return "";
-        }
-        System.out.println("==> BUSCAR ITEM POR NOMBRE");
-        System.out.print("Ingrese el nombre del producto: ");
-        String name = InputUtil.enterString(scanner);
-        Product item = inventory.getItemByName(name);
-        if (item == null) {
-            System.out.println("Producto inexistente...");
-            return "";
-        } else {
-            System.out.println(item);
-            return item.getName();
-        }
-    }*/
-
-    /*public static String viewItemByCode(Inventory inventory, Scanner scanner) {
-        if (inventory == null || inventory.isEmpty()) {
-            System.out.println("Inventario vacío...");
-            return "";
-        }
-        System.out.println("==> BUSCAR ITEM POR CÓDIGO");
-        System.out.print("Ingrese el código del producto: ");
-        String code = InputUtil.enterString(scanner);
-        Product item = inventory.getItemByCode(code);
-        if (item == null) {
-            System.out.println("Producto inexistente...");
-            return "";
-        } else {
-            System.out.println(item);
-            return item.getCode();
-        }
-    }*/
-
-    /*public static boolean modifyItem(Inventory inventory, Scanner scanner) {
-        if (inventory == null || inventory.isEmpty()) {
-            System.out.println("El inventario no está disponible para actualizaciones...");
-            return false;
-        }
-        System.out.println("==> MODIFICAR ITEM");
-        String code = ConsoleView.viewItemByCode(inventory, scanner, "productos");
-        if (code.isEmpty())
-            return false;
-        System.out.print("Ingrese el nuevo nombre del producto: ");
-        String name = InputUtil.enterString(scanner);
-        double price = InputUtil.enterPrice(scanner);
-        int monthsOfWarranty = 0;
-        LocalDate expirationDate = null;
-        Product item = inventory.getItemByCode(code);
-        if (item instanceof ElectronicProduct) {
-            monthsOfWarranty = InputUtil.enterInteger(scanner, "meses de garantía");
-        } else if (item instanceof FoodProduct) {
-            expirationDate = InputUtil.enterDate(scanner, MIN_DATE, MAX_DATE);
-        }
-        System.out.print("Confirma actualizar? ('SI' -- 'NO'): ");
-        if (InputUtil.confirmOperation(scanner)) {
-            item.setName(name);
-            item.setPrice(price);
-            if (item instanceof ElectronicProduct) {
-                ((ElectronicProduct) item).setWarranty(monthsOfWarranty);
-            } else if (item instanceof FoodProduct) {
-                ((FoodProduct) item).setExpirationDate(expirationDate);
-            }
-            System.out.println("Producto actualizado...");
-            System.out.println(item);
-            return true;
-        } else {
-            System.out.println("ℹ️ Operación cancelada por el usuario...");
-            return false;
-        }
-    }*/
-
-    /*public static boolean addItem(Inventory inventory, Catalog catalog, Scanner scanner) {
-        if (inventory == null) {
-            System.out.println("El inventario no está disponible...");
-            return false;
-        }
-        if (catalog == null || catalog.isEmpty()) {
-            System.out.println("No hay categorías para poder agregar productos...");
-            return false;
-        }
-        System.out.println("==> AGREGAR ITEM");
-        ProductType selectedProductType = selectProductType(scanner);
-        Category category = selectCategory(catalog, scanner, selectedProductType);
-        if (category == null) return false;
-        String code;
-        while (true) {
-            System.out.print("Ingrese el código: ");
-            code = InputUtil.enterString(scanner);
-            if (!inventory.isItemCodeIntoRepository(code)) {
-                break;
-            }
-            System.out.println("Ese código ya existe...");
-        }
-        System.out.print("Ingrese el nombre: ");
-        String name = InputUtil.enterString(scanner);
-        double price = InputUtil.enterPrice(scanner);
-        Product item;
-        switch (selectedProductType) {
-            case ELECTRONIC -> {
-                int monthsOfWarranty = InputUtil.enterInteger(scanner, "meses de garantía");
-                item = new ElectronicProduct(code, name, price, category, monthsOfWarranty);
-            }
-            case FOOD -> {
-                LocalDate expirationDate = InputUtil.enterDate(scanner, MIN_DATE, MAX_DATE);
-                item = new FoodProduct(code, name, price, category, expirationDate);
-            }
-            default -> {
-                throw new IllegalArgumentException("Tipo no soportado: " + selectedProductType);
-            }
-        }
-        System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
-        if (InputUtil.confirmOperation(scanner)) {
-            inventory.addItemToRepository(item);
-            System.out.println("Producto agregado...");
-            System.out.println(item);
-            return true;
-        } else {
-            System.out.println("ℹ️ Operación cancelada por el usuario...");
-            return false;
-        }
-
-    }*/
-
-    /*public static boolean deleteItem(Inventory inventory, Scanner scanner) {
-        if (inventory == null || inventory.isEmpty()) {
-            System.out.println("Inventario vacío...");
-            return false;
-        }
-        System.out.println("==> ELIMINAR ITEM");
-        System.out.println("Ingrese el código del producto: ");
-        String code = InputUtil.enterString(scanner);
-        Product item = inventory.getItemByCode(code);
-        if (item == null) {
-            System.out.println("No existe ese producto en el inventario...");
-            return false;
-        }
-        System.out.println("Producto a eliminar:");
-        System.out.println(item);
-        System.out.print("Confirma eliminar? ('SI' -- 'NO'): ");
-        if (InputUtil.confirmOperation(scanner)) {
-            Product product = inventory.removeItemFromRepository(item.getCode());
-            if (product != null) {
-                System.out.println("Producto eliminado...");
-                System.out.println(product);
-                return true;
-            }
-            System.out.println("No se pudo realizar la eliminación de ese producto...");
-            return false;
-        } else {
-            System.out.println("ℹ️ Operación cancelada por el usuario.");
-            return false;
-        }
-    }*/
-
-    /*public static ProductType selectProductType(Scanner scanner) {
-        ProductType[] types = ProductType.values();
-        System.out.println("Tipos de producto");
-        int index = 1;
-        for (ProductType productType : types) {
-            System.out.println(index++ + ". | " + FormatUtil.capitalizeString(productType.getDescription()));
-        }
-        while (true) {
-            System.out.print("Seleccione (1 - " + types.length + "): ");
-            try {
-                int option = Integer.parseInt(InputUtil.enterString(scanner));
-                if (option > 0 && option <= types.length) {
-                    return types[option - 1];
-                }
-                System.out.println("Opción fuera de rango...");
-            } catch (NumberFormatException e) {
-                System.out.println("Opción incorrecta, ingrese un número...");
-            }
-        }
-    }*/
-
-    /*public static Category selectCategory(Catalog catalog, Scanner scanner, ProductType productType) {
-        List<Category> filterCatalog = catalog.getList().stream()
-                .filter(item -> item.getProductType() == productType)
-                .toList();
-        if (filterCatalog.isEmpty()) {
-            System.out.println("No hay categoría para tipo de producto '" + productType.getDescription() + "'");
-            return null;
-        }
-        System.out.println("==> LISTA DE CATEGORÍAS");
-        int index = 1;
-        for (Category item : filterCatalog) {
-            System.out.println(index++ + ". | " + item);
-        }
-        while (true) {
-            System.out.print("Elija la categoría (1 - " + filterCatalog.size() + "): ");
-            try {
-                int option = Integer.parseInt(InputUtil.enterString(scanner));
-                if (option > 0 && option <= filterCatalog.size()) {
-                    return filterCatalog.get(option - 1);
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Opción incorrecta...");
-            }
-        }
-    }*/
-
-    /*public static void listCategories(Catalog catalog) {
-        if (catalog == null || catalog.isEmpty()) {
-            System.out.println("Catálogo vacío...");
-            return;
-        }
-        System.out.println("==> LISTA DE CATEGORÍAS");
-        int index = 1;
-        for (Category item : catalog) {
-            System.out.println(index++ + ". | " + item);
-        }
-    }*/
-
-    /*public static String viewCateroryByName(Catalog catalog, Scanner scanner) {
-        if (catalog == null || catalog.isEmpty()) {
-            System.out.println("Catálogo vacío");
-            return "";
-        }
-        System.out.println("==> BUSCAR CATEGORÍA POR NOMBRE");
-        System.out.print("Ingrese el nombre de la categoría: ");
-        String name = InputUtil.enterString(scanner);
-        Category item = catalog.getItemByName(name);
-        if (item == null) {
-            System.out.println("Categoría inexistente...");
-            return "";
-        } else {
-            System.out.println(item);
-            return item.getName();
-        }
-    }*/
-
-    /*public static String viewCategoryByCode(Catalog catalog, Scanner scanner) {
-        if (catalog == null || catalog.isEmpty()) {
-            System.out.println("Catálogo vacío...");
-            return "";
-        }
-        System.out.println("==> BUSCAR CATEGORÍA POR CÓDIGO");
-        System.out.print("Ingrese el código de la categoría: ");
-        String code = InputUtil.enterString(scanner);
-        Category item = catalog.getItemByCode(code);
-        if (item == null) {
-            System.out.println("Categoría inexistente...");
-            return "";
-        } else {
-            System.out.println(item);
-            return item.getCode();
-        }
-    }*/
-
-    /*public static boolean modifyCategory(Catalog catalog, Scanner scanner) {
-        if (catalog == null || catalog.isEmpty()) {
-            System.out.println("El catálogo no está disponible para actualizaciones");
-            return false;
-        }
-        System.out.println("==> MODIFICAR CATEGORÍA");
-        String code = ConsoleView.viewItemByCode(catalog, scanner, "categoría");
-        if (code.isEmpty())
-            return false;
-        String name;
-        while (true) {
-            System.out.print("Ingrese el nuevo nombre de la categoría: ");
-            name = InputUtil.enterString(scanner);
-            if (!catalog.isItemNameIntoRepository(name)
-                    || catalog.getIndexByCode(code) == catalog.getIndexByName(name)) {
-                break;
-            }
-            System.out.println("Ese nombre ya existe en el catálogo...");
-        }
-        System.out.print("Ingrese la nueva descripción de la categoría: ");
-        String description = InputUtil.enterString(scanner);
-        System.out.print("Confirma actualizar? ('SI' -- 'NO'): ");
-        if (InputUtil.confirmOperation(scanner)) {
-            Category item = catalog.getItemByCode(code);
-            item.setName(name);
-            item.setDescription(description);
-            System.out.println("Categoría actualizada...");
-            System.out.println(item);
-            return true;
-        } else {
-            System.out.println("ℹ️ Operación cancelada por el usuario.");
-            return false;
-        }
-    }*/
-
-    /*public static boolean addCategory(Catalog catalog, Scanner scanner) {
-        if (catalog == null) {
-            System.out.println("El catálogo no está disponible");
-            return false;
-        }
-        System.out.println("==> AGREGAR CATEGORÍA");
-        String code;
-        String name;
-        ProductType selectedProductType;
-        while (true) {
-            System.out.println("--> Seleccione el tipo de producto de la categoría:");
-            selectedProductType = selectProductType(scanner);
-            System.out.print("Ingrese el código: ");
-            code = InputUtil.enterString(scanner);
-            if (!catalog.isItemCodeIntoRepository(code)) {
-                break;
-            }
-            System.out.println("Ese código de categoría ya existe...");
-        }
-        while (true) {
-            System.out.print("Ingrese el nombre: ");
-            name = InputUtil.enterString(scanner);
-            if (!catalog.isItemNameIntoRepository(name)) {
-                break;
-            }
-            System.out.println("Ese nombre de categoría ya existe...");
-        }
-        System.out.print("Ingrese la descripción: ");
-        String description = InputUtil.enterString(scanner);
-        System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
-        if (InputUtil.confirmOperation(scanner)) {
-            Category item = new Category(code, name, description, selectedProductType);
-            catalog.addItemToRepository(item);
-            System.out.println("Categoría agregada...");
-            System.out.println(item);
-            return true;
-        } else {
-            System.out.println("ℹ️ Operación cancelada por el usuario...");
-            return false;
-        }
-
-    }*/
-
-    /*public static boolean deleteCategory(Catalog catalog, Inventory inventory, Scanner scanner) {
-        if (catalog == null || catalog.isEmpty()) {
-            System.out.println("Catálogo vacío...");
-            return false;
-        }
-        System.out.println("==> ELIMINAR CATEGORÍA");
-        System.out.println("Ingrese el código de la categoría: ");
-        String code = InputUtil.enterString(scanner);
-        Category item = catalog.getItemByCode(code);
-        if (item == null) {
-            System.out.println("No existe esa categoría en el catálogo...");
-            return false;
-        }
-        if (catalog.hasCategoryInInventory(code, inventory)) {
-            System.out.println("Categoría asociada a productos en el inventario, no se puede eliminar...");
-            return false;
-        }
-
-        System.out.println("Categoría a eliminar:");
-        System.out.println(item);
-        System.out.print("Confirma eliminar? ('SI' -- 'NO'): ");
-        if (InputUtil.confirmOperation(scanner)) {
-            Category category = catalog.removeItemFromRepository(item.getCode(), inventory);
-            if (category != null) {
-                System.out.println("Categoría eliminada...");
-                System.out.println(category);
-                return true;
-            }
-            System.out.println("No se pudo realizar la eliminación de esa categoría...");
-            return false;
-        } else {
-            System.out.println("ℹ️ Operación cancelada por el usuario.");
-            return false;
-        }
-    }*/
 
     public static void main(String[] args) {
         Inventory inventory = new Inventory();
         Catalog catalog = new Catalog();
         Scanner scanner = new Scanner(System.in);
+        ProductMenu productMenu = new ProductMenu(inventory, catalog, scanner);
+        CategoryMenu categoryMenu = new CategoryMenu(inventory, catalog, scanner);
         int menuOption;
         do {
             showMenuOptions();
@@ -425,18 +46,18 @@ public class App {
             menuOption = ValidateUtil.optionMenu(textUser, MENU_OPTIONS);
             switch (menuOption) {
                 case 0 -> System.out.println("Saliendo del sistema...");
-                case 1 -> ConsoleView.listItems(inventory, "lista de productos");
-                case 2 -> ConsoleView.viewItemByName(inventory, scanner, "producto");
-                case 3 -> ConsoleView.viewItemByCode(inventory, scanner, "producto");
-                case 4 -> ProductMenu.modifyItem(inventory, scanner);
-                case 5 -> ProductMenu.addItem(inventory, catalog, scanner);
-                case 6 -> ProductMenu.deleteItem(inventory, scanner);
-                case 7 -> ConsoleView.listItems(catalog, "lista de categorías");
-                case 8 -> ConsoleView.viewItemByName(catalog, scanner, "categoría");
-                case 9 -> ConsoleView.viewItemByCode(catalog, scanner, "categoría");
-                case 10 -> CategoryMenu.modifyCategory(catalog, scanner);
-                case 11 -> CategoryMenu.addCategory(catalog, scanner);
-                case 12 -> CategoryMenu.deleteCategory(catalog, inventory, scanner);
+                case 1 -> productMenu.listItems();
+                case 2 -> productMenu.viewItemByName();
+                case 3 -> productMenu.viewItemByCode();
+                case 4 -> productMenu.modifyItem();
+                case 5 -> productMenu.addItem();
+                case 6 -> productMenu.deleteItem();
+                case 7 -> categoryMenu.listItems();
+                case 8 -> categoryMenu.viewItemByName();
+                case 9 -> categoryMenu.viewItemByCode();
+                case 10 -> categoryMenu.modifyCategory();
+                case 11 -> categoryMenu.addCategory();
+                case 12 -> categoryMenu.deleteCategory();
                 default -> System.out.println("Opción incorrecta...");
             }
         } while (menuOption != 0);

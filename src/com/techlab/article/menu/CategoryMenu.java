@@ -9,34 +9,53 @@ import com.techlab.article.util.InputUtil;
 import java.util.Scanner;
 
 public class CategoryMenu {
-    private final static String[] MENU_OPTIONS = { "salir", "listar categorías",
-            "buscar categoría por nombre", "buscar categoría por código", "modificar categoría", "agregar categoría",
-            "eliminar categoría" };
 
-    public static boolean modifyCategory(Catalog catalog, Scanner scanner) {
-        if (catalog == null || catalog.isEmpty()) {
+    private final Inventory inventory;
+    private final Catalog catalog;
+    private final Scanner scanner;
+
+    public CategoryMenu (Inventory inventory, Catalog catalog, Scanner scanner) {
+        this.inventory = inventory;
+        this.catalog = catalog;
+        this.scanner = scanner;
+    }
+
+    public void listItems() {
+        ConsoleView.listItems(this.catalog, "lista de categorías");
+    }
+
+    public void viewItemByName() {
+        ConsoleView.viewItemByName(this.catalog, this.scanner, "categoría");
+    }
+
+    public void viewItemByCode() {
+        ConsoleView.viewItemByCode(this.catalog, this.scanner, "categoría");
+    }
+
+    public boolean modifyCategory() {
+        if (this.catalog == null || this.catalog.isEmpty()) {
             System.out.println("El catálogo no está disponible para actualizaciones");
             return false;
         }
         System.out.println("==> MODIFICAR CATEGORÍA");
-        String code = ConsoleView.viewItemByCode(catalog, scanner, "categoría");
+        String code = ConsoleView.viewItemByCode(this.catalog, this.scanner, "categoría");
         if (code.isEmpty())
             return false;
         String name;
         while (true) {
             System.out.print("Ingrese el nuevo nombre de la categoría: ");
-            name = InputUtil.enterString(scanner);
+            name = InputUtil.enterString(this.scanner);
             if (!catalog.isItemNameIntoRepository(name)
-                    || catalog.getIndexByCode(code) == catalog.getIndexByName(name)) {
+                    || catalog.getIndexByCode(code) == this.catalog.getIndexByName(name)) {
                 break;
             }
             System.out.println("Ese nombre ya existe en el catálogo...");
         }
         System.out.print("Ingrese la nueva descripción de la categoría: ");
-        String description = InputUtil.enterString(scanner);
+        String description = InputUtil.enterString(this.scanner);
         System.out.print("Confirma actualizar? ('SI' -- 'NO'): ");
-        if (InputUtil.confirmOperation(scanner)) {
-            Category item = catalog.getItemByCode(code);
+        if (InputUtil.confirmOperation(this.scanner)) {
+            Category item = this.catalog.getItemByCode(code);
             item.setName(name);
             item.setDescription(description);
             System.out.println("Categoría actualizada...");
@@ -48,8 +67,8 @@ public class CategoryMenu {
         }
     }
 
-    public static boolean addCategory(Catalog catalog, Scanner scanner) {
-        if (catalog == null) {
+    public boolean addCategory() {
+        if (this.catalog == null) {
             System.out.println("El catálogo no está disponible");
             return false;
         }
@@ -59,26 +78,26 @@ public class CategoryMenu {
         ProductType selectedProductType;
         while (true) {
             System.out.println("--> Seleccione el tipo de producto de la categoría:");
-            selectedProductType = MenuUtil.selectProductType(scanner);
+            selectedProductType = MenuUtil.selectProductType(this.scanner);
             System.out.print("Ingrese el código: ");
-            code = InputUtil.enterString(scanner);
-            if (!catalog.isItemCodeIntoRepository(code)) {
+            code = InputUtil.enterString(this.scanner);
+            if (!this.catalog.isItemCodeIntoRepository(code)) {
                 break;
             }
             System.out.println("Ese código de categoría ya existe...");
         }
         while (true) {
             System.out.print("Ingrese el nombre: ");
-            name = InputUtil.enterString(scanner);
-            if (!catalog.isItemNameIntoRepository(name)) {
+            name = InputUtil.enterString(this.scanner);
+            if (!this.catalog.isItemNameIntoRepository(name)) {
                 break;
             }
             System.out.println("Ese nombre de categoría ya existe...");
         }
         System.out.print("Ingrese la descripción: ");
-        String description = InputUtil.enterString(scanner);
+        String description = InputUtil.enterString(this.scanner);
         System.out.print("Confirma agregar? ('SI' -- 'NO'): ");
-        if (InputUtil.confirmOperation(scanner)) {
+        if (InputUtil.confirmOperation(this.scanner)) {
             Category item = new Category(code, name, description, selectedProductType);
             catalog.addItemToRepository(item);
             System.out.println("Categoría agregada...");
@@ -91,20 +110,20 @@ public class CategoryMenu {
 
     }
 
-    public static boolean deleteCategory(Catalog catalog, Inventory inventory, Scanner scanner) {
-        if (catalog == null || catalog.isEmpty()) {
+    public boolean deleteCategory() {
+        if (this.catalog == null || this.catalog.isEmpty()) {
             System.out.println("Catálogo vacío...");
             return false;
         }
         System.out.println("==> ELIMINAR CATEGORÍA");
         System.out.println("Ingrese el código de la categoría: ");
-        String code = InputUtil.enterString(scanner);
-        Category item = catalog.getItemByCode(code);
+        String code = InputUtil.enterString(this.scanner);
+        Category item = this.catalog.getItemByCode(code);
         if (item == null) {
             System.out.println("No existe esa categoría en el catálogo...");
             return false;
         }
-        if (catalog.hasCategoryInInventory(code, inventory)) {
+        if (catalog.hasCategoryInInventory(code, this.inventory)) {
             System.out.println("Categoría asociada a productos en el inventario, no se puede eliminar...");
             return false;
         }
@@ -112,8 +131,8 @@ public class CategoryMenu {
         System.out.println("Categoría a eliminar:");
         System.out.println(item);
         System.out.print("Confirma eliminar? ('SI' -- 'NO'): ");
-        if (InputUtil.confirmOperation(scanner)) {
-            Category category = catalog.removeItemFromRepository(item.getCode(), inventory);
+        if (InputUtil.confirmOperation(this.scanner)) {
+            Category category = this.catalog.removeItemFromRepository(item.getCode(), this.inventory);
             if (category != null) {
                 System.out.println("Categoría eliminada...");
                 System.out.println(category);
